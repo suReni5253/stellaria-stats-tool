@@ -106,6 +106,7 @@ def calculate():
     bonus_sp = 0
     base_sp = 0
     spent_sp = 0
+    max_sp = 0
     magic_sp_text = ""
     
     # 画面で選ばれたレベル(例:"Lv2")を取得して、dict_max_spの表から最大SPを引っ張ってくる！

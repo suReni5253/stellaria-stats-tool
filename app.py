@@ -1540,23 +1540,19 @@ with col_left:
     if origin == "ファンタジア":
         st.markdown("---")
         st.markdown("### 🛠️ 製作・専門ジョブ（併任可能）")
-
         list_craft_job = ["(なし)", "採取人〈ギャザラー〉", "職人〈クラフトマン〉"]
-
         # 製作系一次職1
         jc1a, jc1b = st.columns([3, 1])
         with jc1a: 
             st.selectbox("製作系一次職1", list_craft_job, index=si('job_craft1_1', list_craft_job), key='job_craft1_1')
         with jc1b: 
             st.selectbox("Lv", ["0", "1", "2", "3"], index=si('job_craft1_1_lv', ["0", "1", "2", "3"]), key='job_craft1_1_lv')
-
         # 製作系一次職2
         jc2a, jc2b = st.columns([3, 1])
         with jc2a: 
             st.selectbox("製作系一次職2", list_craft_job, index=si('job_craft1_2', list_craft_job), key='job_craft1_2')
         with jc2b: 
             st.selectbox("Lv ", ["0", "1", "2", "3"], index=si('job_craft1_2_lv', ["0", "1", "2", "3"]), key='job_craft1_2_lv')
-
         # 製作系二次職「匠」
         list_craft_job2 = ["(なし)", "匠〈マイスター〉"]
         jc3a, jc3b = st.columns([3, 1])

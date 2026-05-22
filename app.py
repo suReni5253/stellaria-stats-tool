@@ -88,8 +88,14 @@ def si(key, options, default_idx=0):
 # ===================================================
 def calculate():
     p = st.session_state
+    mod_hp = 0
+    mod_mp = 0
+    mod_stamina = 0
+    bonus_sp = 0  # 👈 これが一番上にあれば UnboundLocalError は絶対に出ません
+    base_sp = 0
     spent_sp = 0
     max_sp = 0
+    magic_sp = 0
     sub_stats = st.session_state.get('sub_stats', {})
     origin = st.session_state.get('origin', 'ファンタジア') # 無かったら 'ファンタジア' を使う
     race = st.session_state.get('race', '人間族')          # 無かったら '人間族' を使う
@@ -97,17 +103,17 @@ def calculate():
     lineage = st.session_state.get('lineage', 0)           # 無かったら 0 を使う
     lvl_num = st.session_state.get('lvl_num', 0)           # 無かったら 0 を使う
     current_attrs = st.session_state.get('current_attrs', [])
-    # stats_baseなどの取得も同様に修正が必要です
-    
-    # --- 2. 変数の初期化 ---
-    mod_hp = 0
-    mod_mp = 0
-    mod_stamina = 0
-    bonus_sp = 0
-    base_sp = 0
-    spent_sp = 0
-    max_sp = 0
     magic_sp_text = ""
+    
+    stats = {
+        "膂力": 0, "知力": 0, "敏捷": 0, "精神": 0, 
+        "体格": 0, "生命": 0, "芸術": 0, "商才": 0, "信仰": 0
+    }
+    
+    def add_stats_group(val, exclude=[]):
+        for k in ["膂力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]:
+            if k not in exclude:
+                stats[k] += val
     
     # 画面で選ばれたレベル(例:"Lv2")を取得して、dict_max_spの表から最大SPを引っ張ってくる！
     level_str = p.get('level', 'Lv1')

@@ -113,7 +113,7 @@ def calculate():
     def add_stats_group(val, exclude=[]):
         for k in ["膂力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]:
             if k not in exclude:
-                stats[k] += val
+                stats[k] = stats.get(k, 0) + val
     
     # 画面で選ばれたレベル(例:"Lv2")を取得して、dict_max_spの表から最大SPを引っ張ってくる！
     level_str = p.get('level', 'Lv1')

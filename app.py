@@ -614,10 +614,17 @@ def calculate():
                 mod_mp += 11 if lineage == 100 else (8 if lineage >= 71 else 5)
                 add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5))
             elif race == "スチームブッチャー":
-                st.success("✅ 【通過テスト2】スチームブッチャーの計算処理を実行します！")
+                # ↓↓↓ これをブロックの先頭に追加 ↓↓↓
+                st.success("✅ スチームブッチャーの部屋に侵入成功！")
+                st.info(f"【＋30する前】の筋力: {stats['筋力']}")
+        
+                # (元々の計算コード)
                 mod_hp += 25; mod_mp += 10; mod_stamina -= 2
-                add_stats_group(8 if lineage == 100 else (8 if lineage >= 71 else 8), exclude=["筋力"])
-                stats["筋力"] += 30 if lineage == 100 else (30 if lineage >= 71 else 30)
+                add_stats_group(8, exclude=["筋力"])
+                stats["筋力"] += 30
+        
+                # ↓↓↓ これを計算の直後に追加 ↓↓↓
+                st.info(f"【＋30した後】の筋力: {stats['筋力']}")
             elif race == "怪異憑依者／怪人":
                 val = 15 if lineage == 1 else (13 if lineage == 100 else (8 if lineage >= 71 else 3))
                 mod_hp += val; mod_mp += val

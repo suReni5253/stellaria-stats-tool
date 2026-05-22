@@ -679,9 +679,9 @@ def calculate():
 
     adjust_val = 1 if past0 == "①凡庸" else (2 if past1 == "➁平凡" else 0)
     if adjust_val > 0:
-        for cp in p['combo_plus']:
+        for cp in p.get('combo_plus', []):
             if cp != "(なし)" and cp in stats: stats[cp] += adjust_val
-        for cm in p['combo_minus']:
+        for cm in p.get('combo_minus', []):
             if cm != "(なし)" and cm in stats: stats[cm] -= adjust_val
 
     # --- 出自 ---

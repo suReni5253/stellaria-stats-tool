@@ -1320,7 +1320,10 @@ def calculate():
     if race == "強化演算体": final_hp = int(final_hp * 0.7)
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
     shield_hp_str = ""
-    if is_blessing_active == False:
+    final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
+    
+    # ★ 加護が正常に発動している時だけ、特殊処理を適用する
+    if is_blessing_active:
         if blessing_str == "雪神の加護":
             shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"
         if blessing_str in ["地影神の加護", "風影神の加護"]:

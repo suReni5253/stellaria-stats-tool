@@ -103,6 +103,7 @@ def calculate():
     lineage = st.session_state.get('lineage', 0)           # 無かったら 0 を使う
     lvl_num = st.session_state.get('lvl_num', 0)           # 無かったら 0 を使う
     current_attrs = st.session_state.get('current_attrs', [])
+    is_atoning_blood = False
     magic_sp_text = ""
     
     stats = {
@@ -1321,6 +1322,8 @@ def calculate():
         final_mp = int(final_mp * 0.8)
     if race == "強化演算体": 
         final_hp = int(final_hp * 0.7)
+    if race == "演算異常体": 
+        final_hp = int(final_hp * 0.7)
     shield_hp_str = ""
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
     if is_blessing_active:
@@ -1335,7 +1338,7 @@ def calculate():
     depend = (stats["精神"] + stats["知力"]) // 10
     base_sp = sum([stats["筋力"], stats["知力"], stats["敏捷"], stats["精神"], stats["体格"], stats["生命"], stats["容姿"], stats["芸術"], stats["商才"]])
     final_mental = stats['精神']
-    if race in ["強化演算体"]: final_mental -= 10
+    if race in ["強化演算体"]: final_mental -= 15
     elif race in ["怪異憑依者／怪人", "アンドロイド"]:
         final_mental += 5 if race == "怪異憑依者／怪人" else (15 if lineage == 100 else (10 if lineage >= 71 else 5))
     if bg == "叫喚者": final_mental -= 10

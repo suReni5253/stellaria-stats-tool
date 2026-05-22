@@ -107,11 +107,11 @@ def calculate():
     
     stats = {
         "膂力": 0, "知力": 0, "敏捷": 0, "精神": 0, 
-        "体格": 0, "生命": 0, "芸術": 0, "商才": 0, "信仰": 0
+        "体格": 0, "生命": 0, "芸術": 0, "容姿": 0, "芸術": 0,  "商才": 0, "信仰": 0
     }
 
     def add_stats_group(val, exclude=[]):
-        for k in ["膂力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]:
+        for k in ["膂力", "知力", "敏捷", "精神", "体格", "生命", "容姿"]:
             if k not in exclude:
                 stats[k] = stats.get(k, 0) + val
     
@@ -628,16 +628,16 @@ def calculate():
     # --- 基本補正 ---
     age = p['age']
     if age == "幼年":
-        mod_hp -= 10; mod_stamina += 3; stats["精神"] -= 5; stats["知力"] -= 5; stats["敏捷"] += 10; bonus_sp -= 70
+        mod_hp -= 10; mod_stamina += 3; stats["精神"] -= 5; stats["知力"] -= 5; stats["敏捷"] += 10; stats["体格"] -=10; bonus_sp -= 70
     elif age == "青年":
         mod_hp += 10; mod_mp += 5; stats["筋力"] += 3
-        for k in ["知力", "敏捷", "精神", "体格", "生命", "容姿", "芸術", "信仰"]: stats[k] += 2
+        for k in ["知力", "敏捷", "精神", "体格", "生命", "容姿"]: stats[k] += 2
     elif age == "壮年":
         mod_hp += 5; mod_mp += 10; stats["精神"] += 3
-        for k in ["筋力", "知力", "敏捷", "体格", "生命", "容姿", "芸術", "信仰"]: stats[k] += 2
+        for k in ["筋力", "知力", "敏捷", "体格", "生命", "容姿"]: stats[k] += 2
     elif age == "中年":
         mod_hp -= 5; mod_stamina -= 1; mod_mp += 10; stats["精神"] += 5; stats["知力"] += 5; stats["筋力"] -= 5; stats["敏捷"] -= 5; bonus_sp += 35
-        for k in ["体格", "生命", "容姿", "芸術", "信仰"]: stats[k] += 1
+        for k in ["体格", "生命", "容姿"]: stats[k] += 1
     elif age == "老年":
         mod_hp -= 10; mod_stamina -= 2; mod_mp += 15; stats["知力"] += 10; stats["精神"] += 10; stats["生命"] -= 10; stats["体格"] -= 10; stats["筋力"] -= 10; stats["敏捷"] -= 5; bonus_sp += 70
 
@@ -652,7 +652,7 @@ def calculate():
     if ethnicity == "東方人": stats["精神"] += 3; stats["敏捷"] += 3
     elif ethnicity == "西方人": stats["知力"] += 3; stats["容姿"] += 3
     elif ethnicity == "南方人": stats["生命"] += 3; stats["筋力"] += 3
-    elif ethnicity == "北方人": stats["生命"] += 3
+    elif ethnicity == "北方人": stats["体格"] += 3; stats["生命"] += 3
 
     lineage = p['lineage']
     if p['past0'] == "⑥血統": lineage += 2

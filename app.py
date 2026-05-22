@@ -13,15 +13,15 @@ list_ethnicity = ["東方人", "西方人", "南方人", "北方人"]
 list_race_common = [
     "人間族", "獣人族", "翼人族", "鬼人族", "兎人族", "呪い人", "人魚族",
     "ドラシオン", "巨人族", "猫人族", "妖怪", "妖狐", "ドリュアス",
-    "不死者", "甲虫人", "半獣人", "マンティコア", "天狗", "鬼半妖",
-    "クラーケン", "蹄人族", "マリオネット", "メルフェディオヌ"
+    "不死者", "甲虫人", "半獣人", "天狗", "鬼半妖",
+    "蹄人族", "マリオネット"
 ]
 list_race_fantasia = list_race_common + [
     "ハイエルフ", "ハーフエルフ", "ダークエルフ", "ドワーフ", "ウッドエルフ",
     "フェルダー", "ヴァンパイア", "人狼", "デュラハン", "ダンピール",
     "レウィス・ゴーレム", "ゴブリン", "ハーフドラゴン", "スノウエルフ", "妖精族",
     "ホムンクルス", "ダークドワーフ", "蛇人", "幻蛛族", "失耀天使", "コブラナイ",
-    "フレイムエルフ", "ウーンゲフォイヤー", "ヴァンシー"
+    "フレイムエルフ", "ウーンゲフォイヤー", "ヴァンシー", "クラーケンF","マンティコアF", "メルフェディオヌF"
 ]
 list_race_nocturne = list_race_common + [
     "炉心異常体", "魔眼発現体", "演算異常体", "強化演算体", "サイボーグ",
@@ -29,7 +29,7 @@ list_race_nocturne = list_race_common + [
     "ノクト・ヴァンパイア", "ノクス・エルフ", "ノクス・ハーフエルフ",
     "ホットロード・サイボーグ", "意識人造体（イニシエーター）", "人工獣人",
     "強化人兵", "羅刹", "オートマタ", "アルラウネ", "デトネーター",
-    "スチームブッチャー", "怪異憑依者／怪人"
+    "スチームブッチャー", "怪異憑依者／怪人", "クラーケンN", "マンティコアN", "メルフェディオヌN"
 ]
 list_bg_fantasia = ["騎士", "賊", "魔術師", "聖職者", "貴族", "放浪戦士", "芸術家", "盗人", "狩人", "侍", "窶し者", "双剣士", "銃剣士", "商人", "淑女", "通常使用人", "戦闘使用人", "多重人格者", "対偶者", "海賊", "祈祷者", "蛮族", "贖血徒"]
 list_bg_nocturne = ["軍人", "暴漢", "ブルジョア", "傭兵", "芸術家", "盗人", "狩人", "貧者", "商人", "探偵", "煙突掃除人", "使用人", "官吏", "医者", "淑女", "多重人格者", "警官", "無法者", "対偶者", "教授", "ペテン師", "怪盗", "水兵", "僭称者", "叫喚者", "拳闘士", "囚憶者"]
@@ -64,8 +64,8 @@ list_stats = ["(なし)", "筋力", "知力", "敏捷", "精神", "体格", "生
 base_stats_names = ["筋力", "知力", "敏捷", "精神", "体格", "生命", "容姿", "芸術", "商才", "信仰"]
 list_sub_stats = ["膂力", "叡智", "体力", "持久力", "技量", "神聖", "商売", "表現力", "探求心"]
 dict_max_sp = {"Lv1": 2, "Lv2": 4, "Lv3": 6, "Lv4": 8, "Lv5": 10, "Lv6": 13, "Lv7": 16, "Lv8": 19, "Lv9": 22, "Lv10": 26}
-demon_races = ["鬼人族", "ヴァンパイア", "人狼", "デュラハン", "マンティコア", "クラーケン", "ウーンゲフォイヤー", "メルフェディオヌ", "ノクト・ヴァンパイア"]
-cursed_races = ["呪い人", "羅刹", "アルラウネ", "スチームブッチャー", "怪異憑依者／怪人", "ゴブリン", "妖怪", "妖狐", "不死者" "天狗", "鬼半妖","マリオネット","ホムンクルス","失耀天使"]
+demon_races = ["鬼人族", "ヴァンパイア", "人狼", "デュラハン", "マンティコアF","マンティコアN", "クラーケンF", "クラーケンN", "ウーンゲフォイヤー", "メルフェディオヌ", "ノクト・ヴァンパイア"]
+cursed_races = ["呪い人", "羅刹", "アルラウネ", "スチームブッチャー", "怪異憑依者／怪人", "ゴブリン", "妖怪", "妖狐", "不死者", "天狗", "鬼半妖","マリオネット","ホムンクルス","失耀天使"]
 
 # ===================================================
 # 2. ヘルパー関数
@@ -91,6 +91,8 @@ def calculate():
     mod_hp = 0
     mod_mp = 0
     mod_stamina = 0
+    mod_evasion = 0       # 👈 追加: 通常の回避補正（上限50）
+    eva_limit_break = 0
     bonus_sp = 0  # 👈 これが一番上にあれば UnboundLocalError は絶対に出ません
     base_sp = 0
     spent_sp = 0
@@ -189,6 +191,7 @@ def calculate():
                 mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
                 add_stats_group(12 if lineage == 100 else (8 if lineage >= 71 else 4), exclude=["敏捷"])
                 agi_mer = 25 if lineage == 100 else (20 if lineage >= 71 else 15)
+                eva_limit_break += 5 if lineage == 100 else (4 if lineage >= 91 else (3 if lineage >= 71 else 2))
                 stats["敏捷"] += agi_mer; stats["商才"] += agi_mer
         elif race == "呪い人":
                 if lineage >= 10:
@@ -210,6 +213,7 @@ def calculate():
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 3 if lineage == 100 else (2 if lineage >= 71 else 1)
                 add_stats_group(17 if lineage == 100 else (12 if lineage >= 71 else 7))
+                mod_evasion += 2
         elif race == "巨人族":
                 mod_hp += 20 if lineage == 100 else (15 if lineage >= 71 else 10); mod_mp += 5
                 mod_stamina += 6 if lineage == 100 else (4 if lineage >= 71 else 2)
@@ -226,6 +230,7 @@ def calculate():
                 add_stats_group(7 if lineage == 100 else (4 if lineage >= 71 else 2), exclude=["敏捷", "知力"])
                 stats["知力"] += 6 if lineage == 100 else (4 if lineage >= 71 else 2)
                 stats["商才"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
+                eva_limit_break += 2
                 bonus_sp += 150
                 if race_sub == "ベスティアケット": stats["容姿"] -= 5; mod_hp += 7
                 elif race_sub == "アニマケット": stats["容姿"] += 2; mod_mp += 2
@@ -261,11 +266,13 @@ def calculate():
                     stats["筋力"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                     stats["生命"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                     stats["敏捷"] -= 15
+                    mod_evasion += 3
                     add_stats_group(5, exclude=["筋力", "生命", "敏捷"])
                 elif race_sub == "亜甲種":
                     mod_hp += hp_add - 3 
                     stats["筋力"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                     stats["生命"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
+                    mod_evasion += 5
                     add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5), exclude=["筋力", "生命"])
         elif race == "半獣人":
                 hp_mp = 20 if lineage == 100 else (15 if lineage >= 71 else 10)
@@ -274,10 +281,6 @@ def calculate():
                 stats["筋力"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3), exclude=["筋力"])
                 bonus_sp += 250 if lineage == 100 else (200 if lineage >= 71 else 150)
-        elif race == "マンティコア":
-                mod_hp += 35 if lineage == 100 else (25 if lineage >= 71 else 15)
-                mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
-                add_stats_group(15)
         elif race == "天狗":
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -292,11 +295,6 @@ def calculate():
                 stats["筋力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["筋力"])
                 bonus_sp += 300 if lineage == 100 else (250 if lineage >= 71 else 200)
-        elif race == "クラーケン":
-                hp_mp = 35 if lineage == 100 else (30 if lineage >= 71 else 25)
-                mod_hp += hp_mp; mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
-                mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
-                add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
         elif race == "蹄人族":
                 mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_mp += 5; mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
@@ -310,11 +308,6 @@ def calculate():
                 stats["敏捷"] += 10 if lineage == 100 else (7 if lineage >= 71 else 3)
                 stats["容姿"] += 18 if lineage == 100 else (15 if lineage >= 71 else 8)
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["敏捷", "容姿"])
-        elif race == "メルフェディオヌ":
-                hp_mp = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
-                mod_hp += hp_mp; mod_mp += hp_mp
-                mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
-                add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
 
         if race == "フェルダー": stats["体格"] = int(stats["体格"] * 0.7)
         if race == "コブラナイ": stats["体格"] = int(stats["体格"] * 0.7); stats["敏捷"] = int(stats["敏捷"] * 0.7)
@@ -484,6 +477,7 @@ def calculate():
                 hp_mp = 30 if lineage == 100 else (25 if lineage >= 71 else 20)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
+                mod_evasion += 5
                 stats["容姿"] -= 30
                 add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10), exclude=["容姿"])
             elif race == "ヴァンシー":
@@ -492,7 +486,23 @@ def calculate():
                 mod_stamina += 1
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
-                
+            elif race == "マンティコアF":
+                mod_hp += 35 if lineage == 100 else (25 if lineage >= 71 else 15)
+                mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                eva_limit_break += 5
+                add_stats_group(15)
+            elif race == "クラーケンF":
+                mod_hp += 35 if lineage == 100 else (30 if lineage >= 71 else 25)
+                mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
+                add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
+            elif race == "メルフェディオヌF":
+                hp_mp = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
+                mod_hp += hp_mp; mod_mp += hp_mp
+                mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
+                mod_evasion += 3
+                add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
+
         if origin == "ノクターン":
             if race == "炉心異常体":
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
@@ -616,6 +626,22 @@ def calculate():
                 val = 15 if lineage == 1 else (13 if lineage == 100 else (8 if lineage >= 71 else 3))
                 mod_hp += val; mod_mp += val
                 add_stats_group(val)
+            elif race == "マンティコアN":
+                mod_hp += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
+                mod_mp += 7 if lineage == 100 else (5 if lineage >= 71 else 2)
+                eva_limit_break += 2
+                add_stats_group(7)
+            elif race == "クラーケンN":
+                mod_hp += 17 if lineage == 100 else (15 if lineage >= 71 else 12)
+                mod_mp += 7 if lineage == 100 else (5 if lineage >= 71 else 2)
+                mod_stamina += 2 if lineage == 100 else (2 if lineage >= 71 else 1)
+                add_stats_group(10 if lineage == 100 else (7 if lineage >= 71 else 5))
+            elif race == "メルフェディオヌN":
+                hp_mp = 20 if lineage == 100 else (17 if lineage >= 71 else 15)
+                mod_hp += hp_mp; mod_mp += hp_mp
+                mod_stamina += 2 if lineage == 100 else (1 if lineage >= 71 else 1)
+                mod_evasion += 1
+                add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5))
 
 
 
@@ -696,7 +722,7 @@ def calculate():
         elif bg == "貴族":
             if lineage >= 71: bonus_sp += 120
             else: warning_errors.append("【貴族】家柄71以上が必要です")
-        elif bg == "放浪戦士": mod_stamina += 2; bonus_ab_melee += 1
+        elif bg == "放浪戦士": mod_stamina += 2; bonus_ab_melee += 1; mod_evasion += 5
         elif bg in ["侍", "双剣士", "銃剣士"]: bonus_sp += 70
         elif bg == "商人": stats["商才"] += 10; bonus_sp += 30
         elif bg == "淑女":
@@ -810,9 +836,9 @@ def calculate():
             elif job2 == "武士": check_job_req("旅騎士", "修練者"); mod_hp += 10
             elif job2 == "忍":
                 check_job_req("軽業師", "遊撃師")
-                job_texts.append("忍Lv0: 忍術【魔導剣&脇差威力+20% / 回避+2(突破)】")
+                job_texts.append("忍Lv0: 忍術【魔導剣&脇差威力+20% / 回避+2(突破)】"); eva_limit_break += 2
                 if job2_lv >= 1: job_texts.append("忍Lv1: 手投げ術【投擲使用時、威力+50%】")
-                if job2_lv >= 2: job_texts.append("忍Lv2: 忍術強化【魔導剣&脇差威力+30% / 回避+3】")
+                if job2_lv >= 2: job_texts.append("忍Lv2: 忍術強化【魔導剣&脇差威力+30% / 回避+3】"); eva_limit_break += 3
                 if job2_lv >= 3: job_texts.append("忍Lv3: 透破【隠密70以上時、回避失敗時に基準値-10で再判定可(CT3)】")
                 if job2_lv >= 4: job_texts.append("忍Lv4: 乱波【戦技発動後2ターン片手武器ダメ+5(CT3)】")
                 
@@ -866,11 +892,11 @@ def calculate():
                 if lv >= 3: job_texts.append("戦技『斥候射撃(強)』(狙撃銃威力+30%/MP-30/CT1)")
             elif job_name == "襲撃者":
                 if lv >= 1: mod_hp += 2
-                if lv >= 2: job_texts.append("回避+2")
+                if lv >= 2: job_texts.append("回避+2"); mod_evade += 2
                 if lv >= 3: job_texts.append("戦技『襲撃』(命中-20, 与ダメ+20%/CT3)")
             elif job_name == "強奪者":
                 if lv >= 1: mod_stamina += 2
-                if lv >= 2: job_texts.append("回避+2")
+                if lv >= 2: job_texts.append("回避+2"); mod_evade += 2
                 if lv >= 3: job_texts.append("戦技『強奪』(ダメ30%ドレイン/CT3)")
             elif job_name == "旅芸人":
                 if lv >= 1: job_texts.append("戦技『曲芸』(敵回避基準+5/CT3)")
@@ -893,7 +919,7 @@ def calculate():
                 if lv >= 2: mod_hp += 2
                 if lv >= 3: mod_mp += 2
             elif job_name == "格闘兵":
-                if lv >= 0: job_texts.append("戦技『強襲格闘』(近接+10%, 接近+5, 回避-10)")
+                if lv >= 0: job_texts.append("戦技『強襲格闘』(近接+10%, 接近+5, 回避-10)"); mod_evade -= 10
                 if lv >= 1: job_texts.append("『強襲格闘』強化(近接+20%)")
                 if lv >= 2: job_texts.append("戦技『アサルトインファイト』(連撃反動-8)")
                 if lv >= 3: job_texts.append("『アサルトインファイト』強化(連撃反動-5)")
@@ -929,13 +955,13 @@ def calculate():
             elif job2 == "略奪者":
                 check_job_req_noc("襲撃者")
                 if job2_lv >= 1: mod_hp += 3
-                if job2_lv >= 2: job_texts.append("回避+3")
+                if job2_lv >= 2: job_texts.append("回避+3"); mod_evade += 3
                 if job2_lv >= 3: job_texts.append("戦技『略奪』(ダメ半分ドレイン/CT6)")
                 if job2_lv >= 4: mod_hp += 5
             elif job2 == "強襲兵":
                 check_job_req_noc("歩兵")
                 if job2_lv >= 1: mod_mp += 3
-                if job2_lv >= 2: job_texts.append("回避+2")
+                if job2_lv >= 2: job_texts.append("回避+2"); mod_evade += 2
                 if job2_lv >= 3: job_texts.append("戦技『強襲』(HP-50%,MP-30/与ダメ+50%,命中+20,被ダメ+100%/CT10)")
                 if job2_lv >= 4: mod_hp += 3
             elif job2 == "喜劇役者":
@@ -997,9 +1023,9 @@ def calculate():
                 if stance_lv >= 2: mod_stamina += 1
                 if stance_lv >= 3: mod_hp += 2
             elif stance == "蜻蛉の構え":
-                if stance_lv >= 1: fan_sys_texts.append("【蜻蛉の構えLv1】(※発声必須) 初撃威力+30% / 被ダメ+30% / 回避-5")
-                if stance_lv >= 2: fan_sys_texts.append("【蜻蛉の構えLv2】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)")
-                if stance_lv >= 3: fan_sys_texts.append("【蜻蛉の構えLv3】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)")
+                if stance_lv >= 1: fan_sys_texts.append("【蜻蛉の構えLv1】(※発声必須) 初撃威力+30% / 被ダメ+30% / 回避-5"); mod_evade -= 5
+                if stance_lv >= 2: fan_sys_texts.append("【蜻蛉の構えLv2】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)"); mod_evade -= 5
+                if stance_lv >= 3: fan_sys_texts.append("【蜻蛉の構えLv3】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)"); mod_evade -= 5
                 warning_errors.append("💡【蜻蛉の構え】「天の構えLv2」の解放が前提条件です。")
         if school != "(なし)":
             elf_races = ["ハイエルフ", "ダークエルフ", "ウッドエルフ", "スノウエルフ", "フレイムエルフ"]
@@ -1075,7 +1101,7 @@ def calculate():
             elif s2 == "フォアマン": noc_sys_texts.append(f"【2層: {s2}】制作系(前提無)1つ初期値70(1層上書き可)")
             elif s2 == "アーティスト": noc_sys_texts.append(f"【2層: {s2}】1層スカラー技能失敗時、基準値30で再判定可(1回)")
             elif s2 == "インテレクチュアル": noc_sys_texts.append(f"【2層: {s2}】学術系(芸術除く/前提無)1つ初期値70(1層上書き可)")
-            elif s2 == "スルース": noc_sys_texts.append(f"【2層: {s2}】回避+1(上限突破) / 隠れる初期値+10")
+            elif s2 == "スルース": noc_sys_texts.append(f"【2層: {s2}】回避+1(上限突破) / 隠れる初期値+10"); mod_evade += 1
             elif s2 == "アンダーリング": mod_hp += 5; noc_sys_texts.append(f"【2層: {s2}】名声-1 / 解錠or盗み初期値+20")
             elif s2 == "オブザーバー": mod_mp += 5; noc_sys_texts.append(f"【2層: {s2}】捜索初期値+15")
         if s3 != "(なし)":
@@ -1084,8 +1110,8 @@ def calculate():
             elif s3 == "機動偵察兵": mod_hp += 5; noc_sys_texts.append(f"【3層: {s3}】古びた偵察バイク入手")
             elif s3 == "選抜射手": noc_sys_texts.append(f"【3層: {s3}】対物狙撃銃威力+20% / マークスマンライフル使用可")
             elif s3 == "特殊工作兵": noc_sys_texts.append(f"【3層: {s3}】対人ダメ+10%, 被ダメ-5%, 対兵器ダメ+10%(重兵器時)")
-            elif s3 == "潜入兵": noc_sys_texts.append(f"【3層: {s3}】サプレッサー威力+15% / 潜入戦闘服装備可 / 回避+5")
-            elif s3 == "空挺兵": noc_sys_texts.append(f"【3層: {s3}】落下ダメ-50%, 装備弾倉数+2, 回避+5, 被ダメ-10%")
+            elif s3 == "潜入兵": noc_sys_texts.append(f"【3層: {s3}】サプレッサー威力+15% / 潜入戦闘服装備可 / 回避+5"); mod_evade += 5
+            elif s3 == "空挺兵": noc_sys_texts.append(f"【3層: {s3}】落下ダメ-50%, 装備弾倉数+2, 回避+5, 被ダメ-10%"); mod_evade += 5
             elif s3 == "ベテラン": mod_hp += 5; mod_mp += 5; noc_sys_texts.append(f"【3層: {s3}】与ダメージ+10%")
             elif s3 == "クロスファイア": noc_sys_texts.append(f"【3層: {s3}】銃撃ダメ+10%, 弾倉数+2 / スキル『クロスファイア』(機関銃失敗時MP-15で再射撃)")
             elif s3 == "メンアットアームズ": noc_sys_texts.append(f"【3層: {s3}】コンバットアーマー装備可 / 被ダメージ-10%")
@@ -1104,13 +1130,13 @@ def calculate():
             elif s4 == "狙撃手": noc_sys_texts.append(f"【4層: {s4}】技能『狙撃』取得(初弾威力+100%, 射撃後1T被ダメ+50%)")
             elif s4 == "行進射撃": noc_sys_texts.append(f"【4層: {s4}】戦技『行進射撃』(2T機関銃立射命中減少半減, 弾数固定, 威力+20%, 被ダメ+30%)")
             elif s4 == "特殊工作兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)対人ダメ+20%, 被ダメ-10%, 対兵器ダメ+20%(重兵器時)")
-            elif s4 == "潜入兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)サプレッサー威力+30% / 回避+7")
-            elif s4 == "空挺兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)落下ダメ-60%, 装備弾倉数+3, 回避+5, 被ダメ-20%")
+            elif s4 == "潜入兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)サプレッサー威力+30% / 回避+7"); mod_evade += 7
+            elif s4 == "空挺兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)落下ダメ-60%, 装備弾倉数+3, 回避+5, 被ダメ-20%"); mod_evade += 5
             elif s4 == "コンドッティエーレ": mod_hp += 10; mod_mp += 10; noc_sys_texts.append(f"【4層: {s4}】(※3層上書)与ダメージ+20% / 被ダメージ-10%")
             elif s4 == "ハイランダー": mod_hp -= 30; noc_sys_texts.append(f"【4層: {s4}】近接武器ダメ+40%, 銃撃ダメ+20%, 被ダメ+40%")
-            elif s4 == "コンキスタドール": mod_hp += 5; mod_mp -= 30; noc_sys_texts.append(f"【4層: {s4}】索敵+5(突破) / 回避+5 / 被ダメ-10% / 銃撃ダメ+20%")
+            elif s4 == "コンキスタドール": mod_hp += 5; mod_mp -= 30; noc_sys_texts.append(f"【4層: {s4}】索敵+5(突破) / 回避+5 / 被ダメ-10% / 銃撃ダメ+20%"); mod_evade += 5
             elif s4 == "グラディエーター": noc_sys_texts.append(f"【4層: {s4}】近接連撃回数+1 / 近接武器ダメージ+10%")
-            elif s4 == "ティーガー": mod_hp += 10; mod_mp += 10; mod_stamina += 2; noc_sys_texts.append(f"【4層: {s4}】重機関銃装備可 / 被ダメージ-10% / 回避-20")
+            elif s4 == "ティーガー": mod_hp += 10; mod_mp += 10; mod_stamina += 2; noc_sys_texts.append(f"【4層: {s4}】重機関銃装備可 / 被ダメージ-10% / 回避-20"); mod_evade -= 20
             elif s4 == "アルチザン": noc_sys_texts.append(f"【4層: {s4}】アイテム製作技能値+5(突破) / 製作アイテム耐久値+10%")
             elif s4 == "ローリエット": noc_sys_texts.append(f"【4層: {s4}】上級芸術技能解禁 / 1つ初期値35で取得可(要:通常芸術70)")
             elif s4 == "プロフェッサー": mod_mp += 10; bonus_mental += 10; noc_sys_texts.append(f"【4層: {s4}】70以上の高等技能値+5(突破)")
@@ -1201,6 +1227,7 @@ def calculate():
     sub_exp_mod = int(sub_stats.get('探求心', 0) * 0.5)
     bonus_ab_melee += sub_melee_ab_bonus
     bonus_ab_magic += sub_magic_ab_bonus
+    mod_evasion += sub_eva_mod
     sub_texts = []
     if sub_stats.get('膂力', 0) > 0: sub_texts.append(f"・膂力: 白兵AB+{sub_melee_ab_bonus} / 筋力判定基準値-{sub_str_mod}")
     if sub_stats.get('叡智', 0) > 0: sub_texts.append(f"・叡智: 知力AB+{sub_magic_ab_bonus} / 知力判定基準値-{sub_int_mod}")
@@ -1296,8 +1323,12 @@ def calculate():
                 # 2. ♢効果（特殊ステータス補正など）の適用
                 if blessing_str == "水輝神の加護":
                     stats["商才"] += 5
+                elif blessing_str == "風影神の加護":
+                    mod_evasion += 2
+                elif blessing_str == "雷影神の加護":
+                    mod_evasion -= 5
                 
-                blessing_text_out = f"【加護】{blessing_str}適用"
+                    blessing_text_out = f"【加護】{blessing_str}適用"
                 
     # --- 個別最大値チェック ---
     over_limit_stats = []
@@ -1333,6 +1364,14 @@ def calculate():
             final_stamina = max(1, final_stamina - 3)
     if race == "炉心異常体": 
         final_stamina //= 2
+    # 1. 基礎値（敏捷の50%）
+    base_evasion = stats["敏捷"] // 2
+    # 2. 通常補正を足して、上限50でストップ
+    total_evasion = base_evasion + mod_evasion
+    if total_evasion > 50:
+        total_evasion = 50    
+    # 3. 最後に「突破」分を上乗せする
+    final_evasion = total_evasion + eva_limit_break
     luck = min(50, (sum([stats["筋力"], stats["知力"], stats["敏捷"], stats["精神"], stats["体格"], stats["生命"], stats["容姿"]]) // 10) + mod_luck)
     faint = (stats["生命"] + stats["体格"] + stats["精神"]) // 5
     depend = (stats["精神"] + stats["知力"]) // 10
@@ -1397,6 +1436,7 @@ SP消費量: {sp_status_text}
 HP: {final_hp}{shield_hp_str}
 MP: {final_mp}
 スタミナ: {final_stamina}
+回避: {final_evasion}
 
 気絶点: {faint}
 依存点: {depend}

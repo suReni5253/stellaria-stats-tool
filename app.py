@@ -103,10 +103,6 @@ def calculate():
     lineage = st.session_state.get('lineage', 0)           # 無かったら 0 を使う
     lvl_num = st.session_state.get('lvl_num', 0)           # 無かったら 0 を使う
     current_attrs = st.session_state.get('current_attrs', [])
-    st.warning(f"【システム確認用】originは「{origin}」、raceは「{race}」です")
-    st.error(f"【文字数チェック】現在のorigin: {len(origin)}文字 (※正解は5文字)")
-    st.error(f"【生データ確認】{repr(origin)}")
-    st.error(f"【一致判定】origin == 'ノクターン' の結果: {origin == 'ノクターン'}")
     magic_sp_text = ""
     
     stats = {

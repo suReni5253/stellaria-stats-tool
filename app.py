@@ -162,7 +162,7 @@ def calculate():
     bonus_mental = 0
     mod_luck = 0
     
-    if origin == "ファンタジア" or (origin == "ノクターン" and race in list_race_common):
+    if origin == "ファンタジア" or (origin == "ノクターン" and (race in list_race_common or race in list_race_nocturne)):
         if race == "人間族":
                 val = 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_hp += val; mod_mp += val; mod_stamina += (3 if lineage == 100 else (2 if lineage >= 71 else 1))

@@ -496,6 +496,7 @@ def calculate():
                 for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 
         if origin == "ノクターン":
+            st.error(f"現在の race: '{race}'")
             if race == "炉心異常体":
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 stats["筋力"] += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -611,6 +612,7 @@ def calculate():
                 mod_mp += 11 if lineage == 100 else (8 if lineage >= 71 else 5)
                 add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5))
             elif race == "スチームブッチャー":
+                st.success("✅ ここで確定！スチームブッチャー")
                 mod_hp += 25; mod_mp += 10; mod_stamina -= 2
                 add_stats_group(8, exclude=["筋力"])
                 stats["筋力"] += 30

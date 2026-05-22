@@ -617,8 +617,6 @@ def calculate():
                 add_stats_group(val)
 
 
-    blessing = st.session_state.get('blessing', [])
-    blessing_text_out = ""
 
     actual_attr = st.session_state.get('attr')
     actual_attr1 = p.get('attr1', list_attr_sub[0])
@@ -1232,7 +1230,71 @@ def calculate():
                 linked_main = sub_to_main_combat[sub_k]
                 stats[linked_main] -= penalty
                 warning_errors.append(f"⚠️【サブ格差ペナルティ】{sub_k}の格差(差{diff})により、{linked_main}が -{penalty}")
+                
+    # ==========================================
+    # 加護・血契の処理
+    # ==========================================
+    blessing_str = p.get('blessing', '(なし)')
+    
+    # 例外フラグ（信仰55以上 または 神聖17以上）
+    is_exception = (stats.get("信仰", 0) >= 55 or sub_stats.get("神聖", 0) >= 17)
+    
+    if blessing_str != "(なし)":
+        # 血契のリスト
+        list_blood_covenant = [
+            "金紅神の加護 (血契)", "屍王神の加護 (血契)", "魔血神の加護 (血契)", 
+            "魔狼神の加護 (血契)", "魔炎神の加護 (血契)", "魔鬼神の加護 (血契)"
+        ]
+        
+        # 誓いの加護（HP/MP補正データ）
+        oath_bonus = {
+            "氷影神の加護": {"mod_hp": 2, "mod_mp": 5},
+            "水輝神の加護": {"mod_hp": 0, "mod_mp": 7},
+            "夜影神の加護": {"mod_hp": 7, "mod_mp": 0},
+            "炎輝神の加護": {"mod_hp": 0, "mod_mp": 7},
+            "地影神の加護": {"mod_hp": 5, "mod_mp": 2},
+            "風影神の加護": {"mod_hp": 3, "mod_mp": 3},
+            "雷影神の加護": {"mod_hp": 3, "mod_mp": 5},
+            "雪神の加護": {"mod_hp": 2, "mod_mp": 2},
+            "花神の加護": {"mod_hp": 10, "mod_mp": 0},
+        }
 
+        # 【A】血契の処理（種族制限なしで素通り！）
+        if blessing_str in list_blood_covenant:
+            # ここに血契ごとの数値を直接書いていく
+            if blessing_str == "金紅神の加護 (血契)":
+                mod_mp += 10
+            elif blessing_str == "屍王神の加護 (血契)":
+                mod_mp += 10
+            elif blessing_str == "魔血神の加護 (血契)":
+                mod_mp += 10
+            elif blessing_str == "魔狼神の加護 (血契)":
+                mod_hp += 10
+            elif blessing_str == "魔炎神の加護 (血契)":
+                mod_hp += 5; mod_mp += 5
+            elif blessing_str == "魔鬼神の加護 (血契)":
+                mod_hp += 10; mod_stamina += 2
+                
+            blessing_text_out = f"【血契】{blessing_str}適用"
+
+        # 【B】誓いの加護の処理（魔族・呪族の制限あり）
+        else:
+            if is_demon:
+                warning_errors.append(f"⚠️ 【加護エラー】{blessing_str}は魔族は使用できません。")
+            elif is_cursed and not is_exception:
+                warning_errors.append(f"⚠️ 【加護エラー】{blessing_str}の追加効果は呪族には効果がありません（信仰・神聖不足）。")
+            else:
+                # 1. HP/MP補正の適用
+                data = oath_bonus.get(blessing_str, {})
+                mod_hp += data.get("mod_hp", 0)
+                mod_mp += data.get("mod_mp", 0)
+                
+                # 2. ♢効果（特殊ステータス補正など）の適用
+                if blessing_str == "水輝神の加護":
+                    stats["商才"] += 5
+                
+                blessing_text_out = f"【加護】{blessing_str}適用"
+                
     # --- 個別最大値チェック ---
     over_limit_stats = []
     for k in base_stats_names:
@@ -1247,7 +1309,6 @@ def calculate():
         if stats[k] > limit:
             over_limit_stats.append(f"{k} (素ステ{stats[k]} → {limit})")
             stats[k] = limit
-    if blessing == "水輝神の加護": stats["商才"] += 5
 
     # --- 最終計算 ---
     final_hp = (stats["生命"] + stats["体格"]) // 5 + mod_hp
@@ -1256,9 +1317,13 @@ def calculate():
         final_hp = int(final_hp * 0.8)
         final_mp = int(final_mp * 0.8)
     if race == "強化演算体": final_hp = int(final_hp * 0.7)
-    shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})" if blessing == "雪神の加護" else ""
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
-    if blessing in ["地影神の加護", "風影神の加護"]: final_stamina = max(1, final_stamina - 3)
+    shield_hp_str = ""
+    if is_blessing_active:
+        if blessing_str == "雪神の加護":
+            shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"
+        if blessing_str in ["地影神の加護", "風影神の加護"]:
+            final_stamina = max(1, final_stamina - 3)
     if race == "炉心異常体": final_stamina //= 2
     luck = min(50, (sum([stats["筋力"], stats["知力"], stats["敏捷"], stats["精神"], stats["体格"], stats["生命"], stats["容姿"]]) // 10) + mod_luck)
     faint = (stats["生命"] + stats["体格"] + stats["精神"]) // 5

@@ -1239,6 +1239,7 @@ def calculate():
     # 例外フラグ（信仰55以上 または 神聖17以上）
     is_exception = (stats.get("信仰", 0) >= 55 or sub_stats.get("神聖", 0) >= 17)
     
+    is_blessing_active = False
     if blessing_str != "(なし)":
         # 血契のリスト
         list_blood_covenant = [

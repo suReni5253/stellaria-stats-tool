@@ -609,7 +609,8 @@ def calculate():
                 add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5))
             elif race == "スチームブッチャー":
                 mod_hp += 25; mod_mp += 10; mod_stamina -= 2
-                add_stats_group(8, exclude=["筋力"]); stats["筋力"] += 30
+                add_stats_group(8, exclude=["筋力"])
+                stats["筋力"] += 30
             elif race == "怪異憑依者／怪人":
                 val = 15 if lineage == 1 else (13 if lineage == 100 else (8 if lineage >= 71 else 3))
                 mod_hp += val; mod_mp += val

@@ -493,7 +493,6 @@ def calculate():
                 for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 
         if origin == "ノクターン":
-            st.error(f"現在の race: '{race}'")
             if race == "炉心異常体":
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 stats["筋力"] += 25 if lineage == 100 else (20 if lineage >= 71 else 15)

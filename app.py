@@ -1235,12 +1235,14 @@ def calculate():
     # 加護・血契の処理
     # ==========================================
     blessing_str = p.get('blessing', '(なし)')
+    blessing = blessing_str       # 一番下のプロフィールテキスト表示用
+    blessing_text_out = ""        # 加護の効果テキスト表示用
+    is_blessing_active = False    # スタミナ計算用のスイッチ
     
-    # 例外フラグ（信仰55以上 または 神聖17以上）
     is_exception = (stats.get("信仰", 0) >= 55 or sub_stats.get("神聖", 0) >= 17)
-    
-    is_blessing_active = False
+
     if blessing_str != "(なし)":
+        # ... 以下、今書かれているコードをそのまま残す
         # 血契のリスト
         list_blood_covenant = [
             "金紅神の加護 (血契)", "屍王神の加護 (血契)", "魔血神の加護 (血契)", 

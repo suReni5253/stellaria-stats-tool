@@ -1319,10 +1319,10 @@ def calculate():
     if race == "強化演算体": final_hp = int(final_hp * 0.7)
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
     shield_hp_str = ""
-    if is_blessing_active:
-        if blessing_str == "雪神の加護":
+    if is_blessing_active:False
+    if blessing_str == "雪神の加護":
             shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"
-        if blessing_str in ["地影神の加護", "風影神の加護"]:
+    if blessing_str in ["地影神の加護", "風影神の加護"]:
             final_stamina = max(1, final_stamina - 3)
     if race == "炉心異常体": final_stamina //= 2
     luck = min(50, (sum([stats["筋力"], stats["知力"], stats["敏捷"], stats["精神"], stats["体格"], stats["生命"], stats["容姿"]]) // 10) + mod_luck)

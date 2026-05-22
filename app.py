@@ -103,9 +103,6 @@ def calculate():
     lineage = st.session_state.get('lineage', 0)           # 無かったら 0 を使う
     lvl_num = st.session_state.get('lvl_num', 0)           # 無かったら 0 を使う
     current_attrs = st.session_state.get('current_attrs', [])
-    st.error(f"【種族チェック】現在のrace: {len(race)}文字 (※正解は9文字)")
-    st.error(f"【種族生データ】{repr(race)}")
-    st.error(f"【種族一致判定】race == 'スチームブッチャー' の結果: {race == 'スチームブッチャー'}")
     magic_sp_text = ""
     
     stats = {
@@ -612,7 +609,6 @@ def calculate():
                 mod_mp += 11 if lineage == 100 else (8 if lineage >= 71 else 5)
                 add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5))
             elif race == "スチームブッチャー":
-                st.success("✅ ここで確定！スチームブッチャー")
                 mod_hp += 25; mod_mp += 10; mod_stamina -= 2
                 add_stats_group(8, exclude=["筋力"])
                 stats["筋力"] += 30

@@ -314,7 +314,7 @@ def calculate():
                 hp_mp = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
-                add_stats_all(20 if lineage == 100 else (15 if lineage >= 71 else 10))
+                add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
 
         if race == "フェルダー": stats["体格"] = int(stats["体格"] * 0.7)
         if race == "コブラナイ": stats["体格"] = int(stats["体格"] * 0.7); stats["敏捷"] = int(stats["敏捷"] * 0.7)
@@ -492,7 +492,6 @@ def calculate():
                 mod_stamina += 1
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
-
         if origin == "ノクターン":
             st.success("✅ 【通過テスト1】ノクターンの扉に入りました！")
             if race == "炉心異常体":

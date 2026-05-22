@@ -1123,7 +1123,6 @@ def calculate():
     # 製作系ジョブの処理（必ず最終計算より上に置く！）
     # ==========================================
     # 1. 画面の入力内容を拾い上げて、採取人と職人のLvを自動判定する
-    if origin == "ファンタジア":
         g_lv = 0
         c_lv = 0
         
@@ -1537,29 +1536,28 @@ with col_left:
     with j3a: job2 = st.selectbox("二次職", job2_list, index=si('job2', job2_list), key='job2')
     with j3b: job2_lv = st.selectbox("Lv  ", list_job2_lv, index=si('job2_lv', list_job2_lv), key='job2_lv')
 
-    if origin == "ファンタジア":
-        st.markdown("---")
-        st.markdown("### 🛠️ 製作・専門ジョブ（併任可能）")
-        list_craft_job = ["(なし)", "採取人〈ギャザラー〉", "職人〈クラフトマン〉"]
-        # 製作系一次職1
-        jc1a, jc1b = st.columns([3, 1])
-        with jc1a: 
-            st.selectbox("製作系一次職1", list_craft_job, index=si('job_craft1_1', list_craft_job), key='job_craft1_1')
-        with jc1b: 
-            st.selectbox("Lv", ["0", "1", "2", "3"], index=si('job_craft1_1_lv', ["0", "1", "2", "3"]), key='job_craft1_1_lv')
-        # 製作系一次職2
-        jc2a, jc2b = st.columns([3, 1])
-        with jc2a: 
-            st.selectbox("製作系一次職2", list_craft_job, index=si('job_craft1_2', list_craft_job), key='job_craft1_2')
-        with jc2b: 
-            st.selectbox("Lv ", ["0", "1", "2", "3"], index=si('job_craft1_2_lv', ["0", "1", "2", "3"]), key='job_craft1_2_lv')
-        # 製作系二次職「匠」
-        list_craft_job2 = ["(なし)", "匠〈マイスター〉"]
-        jc3a, jc3b = st.columns([3, 1])
-        with jc3a: 
-            st.selectbox("製作系二次職", list_craft_job2, index=si('job_craft2', list_craft_job2), key='job_craft2')
-        with jc3b: 
-            st.selectbox("Lv  ", ["0", "1", "2", "3", "4"], index=si('job_craft2_lv', ["0", "1", "2", "3", "4"]), key='job_craft2_lv')
+    st.markdown("---")
+    st.markdown("### 🛠️ 製作・専門ジョブ（併任可能）")
+    list_craft_job = ["(なし)", "採取人〈ギャザラー〉", "職人〈クラフトマン〉"]
+    # 製作系一次職1
+    jc1a, jc1b = st.columns([3, 1])
+    with jc1a: 
+        st.selectbox("製作系一次職1", list_craft_job, index=si('job_craft1_1', list_craft_job), key='job_craft1_1')
+    with jc1b: 
+        st.selectbox("Lv", ["0", "1", "2", "3"], index=si('job_craft1_1_lv', ["0", "1", "2", "3"]), key='job_craft1_1_lv')
+    # 製作系一次職2
+    jc2a, jc2b = st.columns([3, 1])
+    with jc2a: 
+        st.selectbox("製作系一次職2", list_craft_job, index=si('job_craft1_2', list_craft_job), key='job_craft1_2')
+    with jc2b: 
+        st.selectbox("Lv ", ["0", "1", "2", "3"], index=si('job_craft1_2_lv', ["0", "1", "2", "3"]), key='job_craft1_2_lv')
+    # 製作系二次職「匠」
+    list_craft_job2 = ["(なし)", "匠〈マイスター〉"]
+    jc3a, jc3b = st.columns([3, 1])
+    with jc3a: 
+        st.selectbox("製作系二次職", list_craft_job2, index=si('job_craft2', list_craft_job2), key='job_craft2')
+    with jc3b: 
+        st.selectbox("Lv  ", ["0", "1", "2", "3", "4"], index=si('job_craft2_lv', ["0", "1", "2", "3", "4"]), key='job_craft2_lv')
         
     st.markdown("---")
     st.markdown("### 🎯 アビリティ")

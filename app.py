@@ -1204,15 +1204,15 @@ def calculate():
         c1_1 = p.get('job_craft1_1', '(なし)')
         c1_1_lv = int(p.get('job_craft1_1_lv', '0'))
         
-        # 枠1で何が選ばれたかチェック
         if "採取人" in c1_1: g_lv = max(g_lv, c1_1_lv)
         elif "職人" in c1_1: c_lv = max(c_lv, c1_1_lv)
-
+        
         # 枠2で何が選ばれたかチェック
         if "採取人" in c1_2: g_lv = max(g_lv, c1_2_lv)
         elif "職人" in c1_2: c_lv = max(c_lv, c1_2_lv)
+
         job_craft2 = p.get('job_craft2', '(なし)')
-        job_craft2_lv = p.get('job_craft2_lv', '0')
+        job_craft2_lv = str(p.get('job_craft2_lv', '0')
 
         # 1. 採取人
         

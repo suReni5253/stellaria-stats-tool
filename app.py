@@ -1592,15 +1592,26 @@ with st.sidebar:
     st.header("💾 セーブ / ロード")
 
     uploaded = st.file_uploader("JSONファイルを読み込む", type=["json"])
+    
     if uploaded is not None:
-        try:
-            raw = json.load(uploaded)
-            for k, v in raw.items():
-                st.session_state[k] = v
+        # 🌟 ストッパー：直前に読み込んだファイル名と違う時だけ処理をする
+        if st.session_state.get("loaded_filename") != uploaded.name:
+            try:
+                raw = json.load(uploaded)
+                for k, v in raw.items():
+                    st.session_state[k] = v
+                
+                # 「このファイルを読み込んだよ」という記録を残す
+                st.session_state["loaded_filename"] = uploaded.name
+                
+                # ここで1回だけ画面をリロードする！
+                st.rerun()
+                
+            except Exception as e:
+                st.error(f"読み込みエラー: {e}")
+        else:
+            # すでに読み込みが終わっている場合は、完了メッセージだけを出し続ける
             st.success("✅ 読み込み完了！")
-            st.rerun()
-        except Exception as e:
-            st.error(f"読み込みエラー: {e}")
 
     st.markdown("---")
     st.caption("計算後、ステータス統計の下のボタンでデータをJSON保存できます。")

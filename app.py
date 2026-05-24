@@ -263,10 +263,11 @@ def calculate():
                 if race_sub == "ベスティアケット": stats["容姿"] -= 5; mod_hp += 7
                 elif race_sub == "アニマケット": stats["容姿"] += 2; mod_mp += 2
         elif race == "妖怪":
-                hp_mp = 20 if lineage == 100 else (15 if lineage >= 71 else 10)
-                mod_hp += hp_mp; mod_mp += hp_mp; mod_stamina += 2
+                mod_hp += 20 if lineage == 100 else (15 if lineage >= 71 else 10) 
+                mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
+                mod_stamina += 2
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5))
-                bonus_sp -= 100
+                bonus_sp += 100
         elif race == "妖狐":
                 mod_hp += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -337,13 +338,6 @@ def calculate():
                 stats["容姿"] += 18 if lineage == 100 else (15 if lineage >= 71 else 8)
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["敏捷", "容姿"])
 
-        if race == "フェルダー": stats["体格"] = int(stats["体格"] * 0.7)
-        if race == "コブラナイ": stats["体格"] = int(stats["体格"] * 0.7); stats["敏捷"] = int(stats["敏捷"] * 0.7)
-        if race == "ゴブリン":
-                if lineage == 100: stats["知力"] = int(stats["知力"] * 0.9)
-                elif lineage >= 71: stats["知力"] = int(stats["知力"] * 0.8)
-                else: stats["知力"] = int(stats["知力"] * 0.7)
-        if race == "フェルダー": mod_hp = int((((stats["生命"] + stats["体格"]) // 5) + mod_hp) * 0.7) - ((stats["生命"] + stats["体格"]) // 5)
 
         if origin == "ファンタジア":
             if race == "ハイエルフ":
@@ -394,6 +388,7 @@ def calculate():
                 add_all = 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 add_stats_group(add_all, exclude=["容姿"])
                 stats["容姿"] += 30 if lineage == 100 else (25 if lineage >= 71 else 20)
+                ab_melee_str = "(格闘AB+1D)"
             elif race == "人狼":
                 mod_hp += 30 if lineage == 100 else (25 if lineage >= 71 else 20)
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
@@ -487,11 +482,13 @@ def calculate():
                 mod_stamina += 3 if lineage == 100 else (2 if lineage >= 71 else 1)
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5))
             elif race == "コブラナイ":
-                mod_hp += 15 if lineage == 100 else (12 if lineage >= 71 else 10)
+                mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_stamina += 5 if lineage == 100 else (3 if lineage >= 71 else 2)
-                stats["筋力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
+                stats["筋力"] += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 stats["商才"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
-                add_stats_group(4 if lineage == 100 else (3 if lineage >= 71 else 2), exclude=["体格", "敏捷", "筋力", "商才"])
+                add_stats_group(5 if lineage == 100 else (4 if lineage >= 71 else 3), exclude=["体格", "敏捷", "筋力", "商才"])
+                stats["体格"] -= 30
+                stats["敏捷"] -= 30
             elif race == "フレイムエルフ":
                 mod_hp += 20 if lineage == 100 else (14 if lineage >= 71 else 8)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -530,6 +527,13 @@ def calculate():
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
                 mod_evasion += 3
                 add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
+            
+        if race == "フェルダー": stats["体格"] = int(stats["体格"] * 0.7)
+        if race == "ゴブリン":
+                if lineage == 100: stats["知力"] = int(stats["知力"] * 0.9)
+                elif lineage >= 71: stats["知力"] = int(stats["知力"] * 0.8)
+                else: stats["知力"] = int(stats["知力"] * 0.7)
+        if race == "フェルダー": mod_hp = int((((stats["生命"] + stats["体格"]) // 5) + mod_hp) * 0.7) - ((stats["生命"] + stats["体格"]) // 5)
 
         if origin == "ノクターン":
             if race == "炉心異常体":

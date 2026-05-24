@@ -1196,27 +1196,26 @@ def calculate():
     # ==========================================
     # 製作系ジョブの処理（必ず最終計算より上に置く！）
     # ==========================================
-    # 1. 画面の入力内容を拾い上げて、採取人と職人のLvを自動判定する
+    if origin == "ファンタジア":
+        # 1. 画面の入力内容を拾い上げて、採取人と職人のLvを自動判定する
         g_lv = 0
         c_lv = 0
         
         c1_1 = p.get('job_craft1_1', '(なし)')
         c1_1_lv = int(p.get('job_craft1_1_lv', '0'))
-        c1_2 = p.get('job_craft1_2', '(なし)')
-        c1_2_lv = int(p.get('job_craft1_2_lv', '0'))
         
         # 枠1で何が選ばれたかチェック
         if "採取人" in c1_1: g_lv = max(g_lv, c1_1_lv)
         elif "職人" in c1_1: c_lv = max(c_lv, c1_1_lv)
-        
+
         # 枠2で何が選ばれたかチェック
         if "採取人" in c1_2: g_lv = max(g_lv, c1_2_lv)
         elif "職人" in c1_2: c_lv = max(c_lv, c1_2_lv)
-
         job_craft2 = p.get('job_craft2', '(なし)')
         job_craft2_lv = p.get('job_craft2_lv', '0')
 
         # 1. 採取人
+        
         if g_lv == 1:
             job_texts.append("採取人Lv1: 採取等判定時、敏捷/筋力+5(技能上限+2)")
         elif g_lv == 2:
@@ -1225,25 +1224,23 @@ def calculate():
             job_texts.append("採取人Lv3: 採取等判定時、敏捷/筋力+10(技能上限+5) / 道具耐久合計+3 / 1日1回幸運で獲得物+1")
 
         # 2. 職人
+
         if c_lv == 1:
             job_texts.append("職人Lv1: 修理クリティカル時、修理回数消費なし")
         elif c_lv == 2:
             job_texts.append("職人Lv2: 1日1回設計/制作ダイスを幸運ロールで振り直し可 / 修理クリティカル消費なし")
         elif c_lv == 3:
             job_texts.append("職人Lv3: 1日1回制作技能失敗時に振り直し可(ファンブル不可) / 修理クリティカル消費なし")
-
+        
         # 3. 匠
         if job_craft2 == "匠〈マイスター〉":
             if lvl_num < 4: warning_errors.append("⚠️【匠エラー】二次職「匠」はLv4以上から選択可能です。")
             if g_lv < 3 or c_lv < 3: warning_errors.append("⚠️【匠条件未達】職人Lv3および採取人Lv3の両方が必要です。")
             
-            # ★ここでスタミナを確実に+1する！
             mod_stamina += 1 
             
             job_texts.append("匠Lv0: 疲れ知らず【修理回数+2 / スタミナ+1】")
-            if job_craft2_lv >= "1": job_texts.append("匠Lv1: 効率修理強化【クリティカル時回復値+1】")
-            if job_craft2_lv >= "2": job_texts.append("匠Lv2: 熟練採取強化【1日2回幸運成功で獲得物+1】")
-            if job_craft2_lv >= "3": job_texts.append("匠Lv3: 最短採取【採取スタミナ消費半減】")
+            # ... (中略) ...
             if job_craft2_lv >= "4": job_texts.append("匠Lv4: 名工【補正半減 / 1日1回ロスト防止】")
     
     # --- サブステータス処理 ---

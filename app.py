@@ -698,7 +698,7 @@ def calculate():
         for k in ["筋力", "知力", "敏捷", "体格", "生命", "容姿"]: stats[k] += 2
     elif age == "中年":
         mod_hp -= 5; mod_stamina -= 1; mod_mp += 10; stats["精神"] += 5; stats["知力"] += 5; stats["筋力"] -= 5; stats["敏捷"] -= 5; bonus_sp += 35
-        for k in ["体格", "生命", "容姿"]: stats[k] += 1
+        for k in ["体格", "生命", "容姿", "知力", "俊敏"]: stats[k] += 1
     elif age == "老年":
         mod_hp -= 10; mod_stamina -= 2; mod_mp += 15; stats["知力"] += 10; stats["精神"] += 10; stats["生命"] -= 10; stats["体格"] -= 10; stats["筋力"] -= 10; stats["敏捷"] -= 5; bonus_sp += 70
 
@@ -1058,7 +1058,7 @@ def calculate():
                 if stance_lv >= 2: mod_hp += 5
                 if stance_lv >= 3: mod_mp += 5
             elif stance == "天の構え":
-                if stance_lv >= 1: fan_sys_texts.append("【天の構え】威力+30% / 被ダメ+30% / 回避-10")
+                if stance_lv >= 1: fan_sys_texts.append("【天の構え】威力+30% / 被ダメ+30% / 回避-10"); mod_evade -= 10
                 if stance_lv >= 2: mod_hp += 2
                 if stance_lv >= 3: mod_hp += 2
             elif stance == "地の構え":

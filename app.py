@@ -1406,6 +1406,55 @@ def calculate():
     mod_stamina += val_extra_stamina
     mod_evasion += val_extra_evasion
 
+    # === アビリティによるステータス加算 ===
+    val_skill = p.get('skill', '(なし)')
+    val_martial = p.get('martial', '(なし)')
+    val_craft = p.get('craft', '(なし)')
+
+    # キャラクターレベル制限の判定用辞書 (Lv1: キャラクタLv2以上, Lv2: Lv4以上...)
+    req_lv_dict = {1: 2, 2: 4, 3: 6, 4: 7}
+
+    def check_and_get_lv(name, val_str):
+        if "Lv1" in val_str: lv = 1
+        elif "Lv2" in val_str: lv = 2
+        elif "Lv3" in val_str: lv = 3
+        elif "Lv4" in val_str: lv = 4
+        else: return 0
+        
+        # レベル制限エラーチェック (lvl_num はキャラクターレベル)
+        req_lv = req_lv_dict[lv]
+        if lvl_num < req_lv:
+            warning_errors.append(f"⚠️【アビリティ条件未達】{name}Lv{lv}の取得にはキャラクターLv{req_lv}以上が必要です（現在Lv{lvl_num}）。")
+        return lv
+
+    # 画面の選択からLv（0〜4）を取得
+    sk_lv = check_and_get_lv("技力", val_skill)
+    ma_lv = check_and_get_lv("武芸", val_martial)
+    cr_lv = check_and_get_lv("工芸", val_craft)
+
+    # 1. 技量（技力）の処理
+    if sk_lv == 1: mod_mp += 10; bonus_sp += 10
+    elif sk_lv == 2: mod_mp += 15; bonus_sp += 20
+    elif sk_lv == 3: mod_mp += 20; bonus_sp += 30
+    elif sk_lv == 4: mod_mp += 25; bonus_sp += 40
+
+    # 2. 武芸の処理
+    if ma_lv == 1: mod_hp += 5; bonus_sp += 10
+    elif ma_lv == 2: mod_hp += 10; bonus_sp += 20
+    elif ma_lv == 3: mod_hp += 15; bonus_sp += 30
+    elif ma_lv == 4: mod_hp += 16; bonus_sp += 40  # ※武芸Lv4はHP+16
+
+    # 3. 工芸の処理
+    if cr_lv == 1: mod_stamina += 1; bonus_sp += 10
+    elif cr_lv == 2: mod_stamina += 2; bonus_sp += 20
+    elif cr_lv == 3: mod_stamina += 3; bonus_sp += 30
+    elif cr_lv == 4: mod_stamina += 4; bonus_sp += 40
+
+    # 技能上限の計算（持っているアビリティの中で最大のLvを参照）
+    max_ab_lv = max(sk_lv, ma_lv, cr_lv)
+    skill_cap = 70 + (max_ab_lv * 5) if max_ab_lv > 0 else 70
+    # ==========================================
+
     # --- 最終計算 ---
     final_hp = (stats["生命"] + stats["体格"]) // 5 + mod_hp
     final_mp = (stats["知力"] + stats["精神"]) // 5 + mod_mp
@@ -1513,8 +1562,7 @@ MP: {final_mp}
 【AB】
 白兵AB: {ab_melee_str}
 知力AB: {ab_magic_str}
-{fan_sys_section}{noc_sys_section}{sub_section}{attr_sys_section}{blessing_section}"""
-    return result_text
+{fan_sys_section}{noc_sys_section}{sub_section}{attr_sys_section}{blessing_section}{extra_buff_section}"""
 
 
 # ===================================================

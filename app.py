@@ -1212,7 +1212,7 @@ def calculate():
         elif "職人" in c1_2: c_lv = max(c_lv, c1_2_lv)
 
         job_craft2 = p.get('job_craft2', '(なし)')
-        job_craft2_lv = str(p.get('job_craft2_lv', '0')
+        job_craft2_lv = str(p.get('job_craft2_lv', '0'))
 
         # 1. 採取人
         

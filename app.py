@@ -932,7 +932,7 @@ def calculate():
 
     elif origin == "ノクターン":
         def apply_job_passive_noc(job_name, lv):
-            nonlocal mod_mp, mod_hp, mod_stamina, bonus_mental
+            nonlocal mod_mp, mod_hp, mod_stamina, bonus_mental, mod_evade
             if job_name == "下士官":
                 if lv >= 1: mod_hp += 2
                 if lv >= 2: mod_mp += 2

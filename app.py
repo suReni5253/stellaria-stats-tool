@@ -1711,19 +1711,6 @@ with col_left:
         spec_3 = st.selectbox("└ 3層 (Lv4)", spec_lists[2], index=si('spec_3', spec_lists[2]), key='spec_3')
         spec_4 = st.selectbox("└ 4層 (Lv5)", spec_lists[3], index=si('spec_4', spec_lists[3]), key='spec_4')
         
-    st.markdown("---")
-    st.markdown("### 🏠 クラン・エシュロン・その他バフ（手入力）")
-    st.caption("※クランハウスの家具効果、ハウジングなどのPLや所属によって変動するバフはこちらに入力してください。")
-
-    col_ex1, col_ex2 = st.columns(2)
-    with col_ex1:
-        st.number_input("追加HP", value=st.session_state.get('extra_hp', 0), step=1, key='extra_hp')
-        st.number_input("追加スタミナ", value=st.session_state.get('extra_stamina', 0), step=1, key='extra_stamina')
-    with col_ex2:
-        st.number_input("追加MP", value=st.session_state.get('extra_mp', 0), step=1, key='extra_mp')
-        st.number_input("追加回避（通常）", value=st.session_state.get('extra_evasion', 0), step=1, key='extra_evasion')
-
-    st.text_input("その他追加能力・テキスト", value=st.session_state.get('extra_text', ""), key='extra_text', placeholder="例:クランハウス内でのみ料理技能+30")
 
 # ===================================================
 # 中央カラム: ステータス入力
@@ -1784,6 +1771,20 @@ with col_center:
                     value=get_int(st.session_state.get(sk, 0)),
                     step=1, key=sk
                 )
+
+    st.markdown("---")
+    st.markdown("### 🏠 クラン・エシュロン・その他バフ（手入力）")
+    st.caption("※クランハウスの家具効果、ハウジングなどのPLや所属によって変動するバフはこちらに入力してください。")
+
+    col_ex1, col_ex2 = st.columns(2)
+    with col_ex1:
+        st.number_input("追加HP", value=st.session_state.get('extra_hp', 0), step=1, key='extra_hp')
+        st.number_input("追加スタミナ", value=st.session_state.get('extra_stamina', 0), step=1, key='extra_stamina')
+    with col_ex2:
+        st.number_input("追加MP", value=st.session_state.get('extra_mp', 0), step=1, key='extra_mp')
+        st.number_input("追加回避（通常）", value=st.session_state.get('extra_evasion', 0), step=1, key='extra_evasion')
+
+    st.text_input("その他追加能力・テキスト", value=st.session_state.get('extra_text', ""), key='extra_text', placeholder="例:クランハウス内でのみ料理技能+30")
 
     st.markdown("---")
     calc_btn = st.button("🎲 ステータスを計算する", use_container_width=True, type="primary")

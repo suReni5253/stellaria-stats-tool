@@ -832,29 +832,6 @@ def calculate():
         elif bg == "叫喚者": pass
         elif bg == "拳闘士": pass
         elif bg == "囚憶者": mod_mp += 5
-
-    # === 対偶者・他PCからの付与ステータス ===
-    # 出自に関わらず「対偶者(パートナー)がいる」場合の追加バフ (対偶者・使用人用)
-    if bg in ["対偶者", "通常使用人", "戦闘使用人", "使用人"] and p.get('is_partnered', False):
-        mod_hp += 5; mod_mp += 5; bonus_sp += 15
-
-    other_bond = p.get('other_bond', '(なし)')
-    if other_bond == "誰かの対偶相手":
-        mod_hp += 2; mod_mp += 2; bonus_sp += 15
-        if bg in ["対偶者", "淑女", "使用人", "通常使用人", "戦闘使用人"]:
-            warning_errors.append("⚠️【対偶相手】契約者・対偶者・使用人の出自では相手になれません。")
-    elif other_bond == "淑女の契約相手":
-        mod_hp += 5; mod_mp += 5; bonus_sp += 30
-        if gender != "男": warning_errors.append("⚠️【契約相手】淑女の契約相手は「男性」である必要があります。")
-        if bg in ["対偶者", "淑女", "使用人", "通常使用人", "戦闘使用人"]:
-            warning_errors.append("⚠️【契約相手】契約者・対偶者・使用人の出自では相手になれません。")
-    elif other_bond == "使用人の主人" or other_bond == "使用人の主人(家令任命)":
-        warning_errors.append(f"💡【主人】自身の家柄は使用人(主人より下か同値)以上である必要があります(現在:{lineage})。")
-        if bg in ["使用人", "通常使用人", "戦闘使用人"]:
-            warning_errors.append("⚠️【主従】主人の出自が「使用人」であってはなりません。")
-        if other_bond == "使用人の主人(家令任命)":
-            mod_hp += 5
-            
     # --- ジョブ処理 ---
     job1_1 = p['job1_1']; job1_1_lv = int(p['job1_1_lv'])
     job1_2 = p['job1_2']; job1_2_lv = int(p['job1_2_lv'])
@@ -1620,7 +1597,18 @@ with col_left:
     if bg in bg_sub_map:
         bg_sub_opts = bg_sub_map[bg]
         bg_sub = st.selectbox("└ 出自派生", bg_sub_opts, index=si('bg_sub', bg_sub_opts), key='bg_sub')
-        
+
+    # 属性
+    attr = st.selectbox("属性", list_attr, index=si('attr', list_attr), key='attr')
+    attr1, attr2 = list_attr_sub[0], list_attr_sub[1]
+    if attr == "双属性":
+        ca1, ca2 = st.columns(2)
+        with ca1: attr1 = st.selectbox("└ 属性1", list_attr_sub, index=si('attr1', list_attr_sub, 0), key='attr1')
+        with ca2: attr2 = st.selectbox("└ 属性2", list_attr_sub, index=si('attr2', list_attr_sub, 1), key='attr2')
+
+    lineage = st.number_input("家柄（基本値）", min_value=0, max_value=100,
+                              value=get_int(st.session_state.get('lineage', 0)), step=1, key='lineage')
+    
     st.markdown("---")
     st.markdown("### 🤝 絆・契約ステータス")
     
@@ -1636,17 +1624,6 @@ with col_left:
 
     list_other_bond = ["(なし)", "誰かの対偶相手", "淑女の契約相手", "使用人の主人", "使用人の主人(家令任命)"]
     st.selectbox("他PCからの関係付与 (自分が相手側の場合)", list_other_bond, index=si('other_bond', list_other_bond), key='other_bond')
-
-    # 属性
-    attr = st.selectbox("属性", list_attr, index=si('attr', list_attr), key='attr')
-    attr1, attr2 = list_attr_sub[0], list_attr_sub[1]
-    if attr == "双属性":
-        ca1, ca2 = st.columns(2)
-        with ca1: attr1 = st.selectbox("└ 属性1", list_attr_sub, index=si('attr1', list_attr_sub, 0), key='attr1')
-        with ca2: attr2 = st.selectbox("└ 属性2", list_attr_sub, index=si('attr2', list_attr_sub, 1), key='attr2')
-
-    lineage = st.number_input("家柄（基本値）", min_value=0, max_value=100,
-                              value=get_int(st.session_state.get('lineage', 0)), step=1, key='lineage')
 
     st.markdown("---")
     st.markdown("### ⚔️ ジョブ")

@@ -753,12 +753,23 @@ def calculate():
         elif bg in ["侍", "双剣士", "銃剣士"]: bonus_sp += 70
         elif bg == "商人": stats["商才"] += 10; bonus_sp += 30
         elif bg == "淑女":
-            if gender == "女": bonus_sp += 70; stats["容姿"] += 6
-            else: warning_errors.append("【淑女】性別「女」専用です")
-        elif bg == "通常使用人": stats["容姿"] += 3; stats["知力"] += 3; bonus_sp += 70; mod_mp += 5
-        elif bg == "戦闘使用人": stats["容姿"] += 3; stats["知力"] += 3; bonus_sp += 70; mod_hp += 5
+            if gender != "女": warning_errors.append("⚠️【淑女】性別「女」専用です")
+            if p.get('is_lady_contracted', False):
+                bonus_sp += 100; stats["容姿"] += 6; mod_hp += 10; mod_mp += 10; mod_stamina += 2
+                warning_errors.append(f"💡【淑女】相手(男性)との家柄差は±5以内の必要があります(自身の家柄:{lineage})。")
+            else:
+                warning_errors.append("💡【淑女】男性と契約を行うまで、技能Pなどの恩恵は適用されません。")
+        elif bg == "通常使用人": 
+            stats["容姿"] += 3; stats["知力"] += 3; bonus_sp += 70; mod_mp += 5
+            if p.get('is_servant_mastered', False): mod_mp += 5
+            if p.get('is_steward', False): mod_mp += 5
+        elif bg == "戦闘使用人": 
+            stats["容姿"] += 3; stats["知力"] += 3; bonus_sp += 70; mod_hp += 5
+            if p.get('is_servant_mastered', False): mod_hp += 5
+            if p.get('is_steward', False): mod_hp += 5
         elif bg == "多重人格者": mod_mp += 5; bonus_sp += 30
-        elif bg == "対偶者": bonus_sp += 35; stats["容姿"] += 2
+        elif bg == "対偶者": 
+            bonus_sp += 35; stats["容姿"] += 2
         elif bg == "海賊": mod_hp += 5; mod_stamina += 1; bonus_sp += 30
         elif bg == "祈祷者": mod_mp += 10
         elif bg == "蛮族": mod_hp += 5; bonus_sp += 20
@@ -787,13 +798,23 @@ def calculate():
         elif bg == "煙突掃除人": mod_hp += 7; mod_mp += 7; bonus_sp += 120; warning_errors.append("💡【煙突掃除人】指定ステータスに+4手動で割り振ってください。")
         elif bg == "使用人":
             stats["容姿"] += 3; stats["知力"] += 3
-            if bg_sub == "使用人": bonus_sp += 120; mod_mp += 5
-            elif bg_sub == "戦闘使用人": bonus_sp += 120; mod_hp += 5
+            if bg_sub == "使用人":
+                bonus_sp += 120; mod_mp += 5
+                if p.get('is_servant_mastered', False): mod_mp += 5
+                if p.get('is_steward', False): mod_mp += 5
+            elif bg_sub == "戦闘使用人":
+                bonus_sp += 120; mod_hp += 5
+                if p.get('is_servant_mastered', False): mod_hp += 5
+                if p.get('is_steward', False): mod_hp += 5
         elif bg == "官吏": bonus_sp += 150; stats["精神"] += 6
         elif bg == "医者": bonus_sp += 70; stats["知力"] += 6; mod_hp += 3; mod_mp += 5
         elif bg == "淑女":
-            if gender == "女": bonus_sp += 120; stats["容姿"] += 6
-            else: warning_errors.append("【淑女】性別「女」専用です")
+            if gender != "女": warning_errors.append("⚠️【淑女】性別「女」専用です")
+            if p.get('is_lady_contracted', False):
+                bonus_sp += 150; stats["容姿"] += 6; mod_hp += 10; mod_mp += 10; mod_stamina += 2
+                warning_errors.append(f"💡【淑女】相手(男性)との家柄差は±5以内の必要があります(自身の家柄:{lineage})。")
+            else:
+                warning_errors.append("💡【淑女】男性と契約を行うまで、技能Pなどの恩恵は適用されません。")
         elif bg == "多重人格者": mod_mp += 5; bonus_sp += 30
         elif bg == "警官":
             if bg_sub == "警官": bonus_sp += 70; mod_hp += 10; warning_errors.append("💡【警官】指定ステータスに+8手動で割り振ってください。")
@@ -801,7 +822,8 @@ def calculate():
         elif bg == "無法者":
             if bg_sub == "ギャング": bonus_sp += 50; mod_hp += 5; stats["筋力"] += 5
             elif bg_sub == "マフィア": bonus_sp += 70; bonus_ab_melee += 3; mod_mp += 5; stats["筋力"] += 2
-        elif bg == "対偶者": bonus_sp += 35; stats["容姿"] += 2
+        elif bg == "対偶者": 
+            bonus_sp += 35; stats["容姿"] += 2
         elif bg == "教授": bonus_sp += 180; mod_mp += 5; mod_hp += 5
         elif bg == "ペテン師": mod_hp += 5; mod_mp += 5; stats["知力"] += 3; bonus_sp += 60
         elif bg == "怪盗": mod_mp += 10; bonus_sp += 100
@@ -811,6 +833,28 @@ def calculate():
         elif bg == "拳闘士": pass
         elif bg == "囚憶者": mod_mp += 5
 
+    # === 対偶者・他PCからの付与ステータス ===
+    # 出自に関わらず「対偶者(パートナー)がいる」場合の追加バフ (対偶者・使用人用)
+    if bg in ["対偶者", "通常使用人", "戦闘使用人", "使用人"] and p.get('is_partnered', False):
+        mod_hp += 5; mod_mp += 5; bonus_sp += 15
+
+    other_bond = p.get('other_bond', '(なし)')
+    if other_bond == "誰かの対偶相手":
+        mod_hp += 2; mod_mp += 2; bonus_sp += 15
+        if bg in ["対偶者", "淑女", "使用人", "通常使用人", "戦闘使用人"]:
+            warning_errors.append("⚠️【対偶相手】契約者・対偶者・使用人の出自では相手になれません。")
+    elif other_bond == "淑女の契約相手":
+        mod_hp += 5; mod_mp += 5; bonus_sp += 30
+        if gender != "男": warning_errors.append("⚠️【契約相手】淑女の契約相手は「男性」である必要があります。")
+        if bg in ["対偶者", "淑女", "使用人", "通常使用人", "戦闘使用人"]:
+            warning_errors.append("⚠️【契約相手】契約者・対偶者・使用人の出自では相手になれません。")
+    elif other_bond == "使用人の主人" or other_bond == "使用人の主人(家令任命)":
+        warning_errors.append(f"💡【主人】自身の家柄は使用人(主人より下か同値)以上である必要があります(現在:{lineage})。")
+        if bg in ["使用人", "通常使用人", "戦闘使用人"]:
+            warning_errors.append("⚠️【主従】主人の出自が「使用人」であってはなりません。")
+        if other_bond == "使用人の主人(家令任命)":
+            mod_hp += 5
+            
     # --- ジョブ処理 ---
     job1_1 = p['job1_1']; job1_1_lv = int(p['job1_1_lv'])
     job1_2 = p['job1_2']; job1_2_lv = int(p['job1_2_lv'])
@@ -1576,6 +1620,22 @@ with col_left:
     if bg in bg_sub_map:
         bg_sub_opts = bg_sub_map[bg]
         bg_sub = st.selectbox("└ 出自派生", bg_sub_opts, index=si('bg_sub', bg_sub_opts), key='bg_sub')
+        
+    st.markdown("---")
+    st.markdown("### 🤝 絆・契約ステータス")
+    
+    if bg == "淑女":
+        st.checkbox("☑ 男性と契約している", value=st.session_state.get('is_lady_contracted', False), key='is_lady_contracted')
+    elif bg == "対偶者":
+        st.checkbox("☑ 対偶者（パートナー）がいる", value=st.session_state.get('is_partnered', False), key='is_partnered')
+    elif bg in ["通常使用人", "戦闘使用人", "使用人"]:
+        sm = st.checkbox("☑ 仕える主人がいる", value=st.session_state.get('is_servant_mastered', False), key='is_servant_mastered')
+        if sm:
+            st.checkbox("☑ 「家令」に任命されている", value=st.session_state.get('is_steward', False), key='is_steward')
+        st.checkbox("☑ 対偶者（パートナー）がいる", value=st.session_state.get('is_partnered', False), key='is_partnered')
+
+    list_other_bond = ["(なし)", "誰かの対偶相手", "淑女の契約相手", "使用人の主人", "使用人の主人(家令任命)"]
+    st.selectbox("他PCからの関係付与 (自分が相手側の場合)", list_other_bond, index=si('other_bond', list_other_bond), key='other_bond')
 
     # 属性
     attr = st.selectbox("属性", list_attr, index=si('attr', list_attr), key='attr')

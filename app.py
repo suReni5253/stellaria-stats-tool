@@ -1900,10 +1900,13 @@ with col_right:
         simple_keys = ['origin', 'level', 'age', 'gender', 'ethnicity', 'race', 'race_sub',
                        'blessing', 'past0', 'past1', 'past2', 'bg', 'bg_sub',
                        'attr', 'attr1', 'attr2', 'lineage',
-                       'job1_1', 'job1_1_lv', 'job1_2', 'job1_2_lv','job_craft2', 'job_craft2_lv'
+                       'job1_1', 'job1_1_lv', 'job1_2', 'job1_2_lv','job_craft2', 'job_craft2_lv',
                        'job2', 'job2_lv', 'skill', 'martial', 'craft',
                        'stance', 'stance_lv', 'school',
-                       'spec_route', 'spec_1', 'spec_2', 'spec_3', 'spec_4']
+                       'spec_route', 'spec_1', 'spec_2', 'spec_3', 'spec_4'
+                       'is_lady_contracted', 'is_partnered', 'is_servant_mastered', 'is_steward', 'other_bond',
+                       'extra_hp', 'extra_mp', 'extra_stamina', 'extra_evasion', 'extra_text',
+                       'job_craft1_1', 'job_craft1_1_lv', 'job_craft1_2', 'job_craft1_2_lv', 'job_craft2', 'job_craft2_lv']
         for k in simple_keys:
             if k in st.session_state:
                 save_data[k] = st.session_state[k]

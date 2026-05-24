@@ -155,6 +155,33 @@ def calculate():
         current_attrs = [actual_attr]
         attr_text = actual_attr
     # ★追加ここまで
+    attr_sys_texts = []
+    
+    for a in current_attrs:
+        if a == "炎属性":
+            attr_sys_texts.append("【炎属性】《燃焼》炎・水・夜光属性以外の敵に対して攻撃威力+10%(無属性にも有効)")
+        elif a == "風属性":
+            attr_sys_texts.append("【風属性】《拡散》風属性攻撃時、与ダメの20%を追加ダメージとして与える(風魔法扱い)\n《飄風》常時回避+5")
+            mod_evasion += 5
+        elif a == "地属性":
+            attr_sys_texts.append("【地属性】《堅牢》自身の防護点を+20%する\n《地母神の加護》HP+2")
+            mod_hp += 2
+        elif a == "氷属性":
+            attr_sys_texts.append("【氷属性】《凍傷》氷・夜光以外の敵に氷攻撃時、凍傷ゲージ+1d10(最大10で次ターン氷ダメ2倍/CT3T)")
+        elif a == "水属性":
+            attr_sys_texts.append("【水属性】《湿潤》水回復で火属性持続ダメ解除 / 水攻撃で敵を1T湿潤化(雷ダメ1.5倍化)\n《水明》回復魔法の消費MP-5 / 状態異常：火傷を無効化")
+        elif a == "雷属性":
+            attr_sys_texts.append("【雷属性】《感電》雷・夜光以外の敵からの回避+5 / 湿潤状態の敵へのダメージ+50%")
+        elif a == "雪属性":
+            attr_sys_texts.append("【雪属性】《吹雪》自身の攻撃に対する火・水以外の敵回避を常時-10(下限5)")
+        elif a == "花属性":
+            attr_sys_texts.append("【花属性】《荊棘毒》湿潤化した敵への花属性攻撃ダメージ1.5倍(ダメ50%は回復不可)\n《華風》HP+5")
+            mod_hp += 5
+        elif a == "光属性":
+            attr_sys_texts.append("【光属性】《神光》無属性以外のダメに対する防護点+2 / 神秘術使用可 / 回復魔法の回復量+10%")
+        elif a == "夜属性":
+            attr_sys_texts.append("【夜属性】《夜月》回避+2(突破) / ファンタジアでの〈敷波流〉取得時追加SP不要")
+            eva_limit_break += 2
     
     # 計算で使いそうな変数をあらかじめ定義
     bonus_ab_melee = 0
@@ -1408,6 +1435,8 @@ def calculate():
     if fan_sys_texts: fan_sys_section = f"\n【ファンタジア限定システム効果】\n" + "\n".join(fan_sys_texts) + "\n"
     noc_sys_section = ""
     if noc_sys_texts: noc_sys_section = f"\n【ノクターン限定システム効果 (スペシャリスト)】\n" + "\n".join(noc_sys_texts) + "\n"
+    attr_sys_section = ""
+    if attr_sys_texts: attr_sys_section = f"\n【属性特性】\n" + "\n".join(attr_sys_texts) + "\n"
 
     result_text = f"""【プロフィール】
 星: {origin}　|　種族: {race}{sub_text}
@@ -1450,7 +1479,7 @@ MP: {final_mp}
 【AB】
 白兵AB: {ab_melee_str}
 知力AB: {ab_magic_str}
-{fan_sys_section}{noc_sys_section}{sub_section}{blessing_section}"""
+{fan_sys_section}{noc_sys_section}{sub_section}{attr_sys_section}{blessing_section}"""
     return result_text
 
 

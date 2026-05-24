@@ -366,7 +366,7 @@ def calculate():
                 stats["筋力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 stats["生命"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 stats["体格"] += 5
-                for k in ["知力", "敏捷", "精神", "容姿", "芸術", "商才", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                for k in ["知力", "敏捷", "精神", "容姿", "芸術"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
             elif race == "ウッドエルフ":
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -381,7 +381,7 @@ def calculate():
                 stats["知力"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 stats["商才"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 stats["敏捷"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
-                for k in ["筋力", "精神", "生命", "容姿", "芸術", "信仰"]: stats[k] += 10 if lineage == 100 else (7 if lineage >= 71 else 4)
+                for k in ["筋力", "精神", "生命", "容姿"]: stats[k] += 10 if lineage == 100 else (7 if lineage >= 71 else 4)
             elif race == "ヴァンパイア":
                 hp_mp = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
                 mod_hp += hp_mp; mod_mp += hp_mp
@@ -418,14 +418,17 @@ def calculate():
                     for k in ["筋力", "生命"]: stats[k] += 20
                     stats["敏捷"] += 15
                     add_stats_group(10, exclude=["筋力", "生命", "敏捷", "容姿", "知力"])
+                    extra_melee_str = "(白兵AB+1D)"
                 elif lineage >= 71:
                     mod_hp += 15; mod_mp += 5; stats["容姿"] -= 15
                     for k in ["筋力", "生命", "敏捷"]: stats[k] += 15
                     add_stats_group(8, exclude=["筋力", "生命", "敏捷", "容姿", "知力"])
+                    extra_melee_str = "(白兵AB+1D)"
                 else:
                     mod_hp += 10; stats["容姿"] -= 20
                     for k in ["筋力", "生命", "敏捷"]: stats[k] += 10
                     add_stats_group(5, exclude=["筋力", "生命", "敏捷", "容姿", "知力"])
+                    extra_melee_str = "(白兵AB+1D)"
             elif race == "ハーフドラゴン":
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_mp += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
@@ -437,7 +440,7 @@ def calculate():
                 mod_mp += 27 if lineage == 100 else (22 if lineage >= 71 else 17)
                 stats["知力"] += 22 if lineage == 100 else (17 if lineage >= 71 else 12)
                 stats["容姿"] += 21 if lineage == 100 else (16 if lineage >= 71 else 11)
-                for k in ["筋力", "敏捷", "精神", "体格", "生命", "芸術", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                for k in ["筋力", "敏捷", "精神", "体格", "生命"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 if lineage >= 91 and ("氷属性" in current_attrs or "雪属性" in current_attrs):
                     mod_hp += 5; mod_mp += 5
             elif race == "妖精族":
@@ -494,7 +497,7 @@ def calculate():
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 stats["知力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 stats["容姿"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
-                for k in ["筋力", "敏捷", "精神", "体格", "生命", "芸術", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                for k in ["筋力", "敏捷", "精神", "体格", "生命"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 if "炎属性" in current_attrs:
                     mod_mp += 10
                     ab_magic_extra = " (+1D)"
@@ -510,7 +513,7 @@ def calculate():
                 mod_mp += 30 if lineage == 100 else (25 if lineage >= 71 else 20)
                 mod_stamina += 1
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
-                for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命", "芸術", "商才", "信仰"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
             elif race == "マンティコアF":
                 mod_hp += 35 if lineage == 100 else (25 if lineage >= 71 else 15)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)

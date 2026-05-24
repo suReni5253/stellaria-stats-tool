@@ -932,7 +932,7 @@ def calculate():
 
     elif origin == "ノクターン":
         def apply_job_passive_noc(job_name, lv):
-            nonlocal mod_mp, mod_hp, mod_stamina, bonus_mental, mod_evade
+            nonlocal mod_mp, mod_hp, mod_stamina, bonus_mental, mod_evasion
             if job_name == "下士官":
                 if lv >= 1: mod_hp += 2
                 if lv >= 2: mod_mp += 2
@@ -947,11 +947,11 @@ def calculate():
                 if lv >= 3: job_texts.append("戦技『斥候射撃(強)』(狙撃銃威力+30%/MP-30/CT1)")
             elif job_name == "襲撃者":
                 if lv >= 1: mod_hp += 2
-                if lv >= 2: job_texts.append("回避+2"); mod_evade += 2
+                if lv >= 2: job_texts.append("回避+2"); mod_evasion += 2
                 if lv >= 3: job_texts.append("戦技『襲撃』(命中-20, 与ダメ+20%/CT3)")
             elif job_name == "強奪者":
                 if lv >= 1: mod_stamina += 2
-                if lv >= 2: job_texts.append("回避+2"); mod_evade += 2
+                if lv >= 2: job_texts.append("回避+2"); mod_evasion += 2
                 if lv >= 3: job_texts.append("戦技『強奪』(ダメ30%ドレイン/CT3)")
             elif job_name == "旅芸人":
                 if lv >= 1: job_texts.append("戦技『曲芸』(敵回避基準+5/CT3)")
@@ -974,7 +974,7 @@ def calculate():
                 if lv >= 2: mod_hp += 2
                 if lv >= 3: mod_mp += 2
             elif job_name == "格闘兵":
-                if lv >= 0: job_texts.append("戦技『強襲格闘』(近接+10%, 接近+5, 回避-10)"); mod_evade -= 10
+                if lv >= 0: job_texts.append("戦技『強襲格闘』(近接+10%, 接近+5, 回避-10)"); mod_evasion -= 10
                 if lv >= 1: job_texts.append("『強襲格闘』強化(近接+20%)")
                 if lv >= 2: job_texts.append("戦技『アサルトインファイト』(連撃反動-8)")
                 if lv >= 3: job_texts.append("『アサルトインファイト』強化(連撃反動-5)")
@@ -1010,13 +1010,13 @@ def calculate():
             elif job2 == "略奪者":
                 check_job_req_noc("襲撃者")
                 if job2_lv >= 1: mod_hp += 3
-                if job2_lv >= 2: job_texts.append("回避+3"); mod_evade += 3
+                if job2_lv >= 2: job_texts.append("回避+3"); mod_evasion += 3
                 if job2_lv >= 3: job_texts.append("戦技『略奪』(ダメ半分ドレイン/CT6)")
                 if job2_lv >= 4: mod_hp += 5
             elif job2 == "強襲兵":
                 check_job_req_noc("歩兵")
                 if job2_lv >= 1: mod_mp += 3
-                if job2_lv >= 2: job_texts.append("回避+2"); mod_evade += 2
+                if job2_lv >= 2: job_texts.append("回避+2"); mod_evasion += 2
                 if job2_lv >= 3: job_texts.append("戦技『強襲』(HP-50%,MP-30/与ダメ+50%,命中+20,被ダメ+100%/CT10)")
                 if job2_lv >= 4: mod_hp += 3
             elif job2 == "喜劇役者":
@@ -1058,7 +1058,7 @@ def calculate():
                 if stance_lv >= 2: mod_hp += 5
                 if stance_lv >= 3: mod_mp += 5
             elif stance == "天の構え":
-                if stance_lv >= 1: fan_sys_texts.append("【天の構え】威力+30% / 被ダメ+30% / 回避-10"); mod_evade -= 10
+                if stance_lv >= 1: fan_sys_texts.append("【天の構え】威力+30% / 被ダメ+30% / 回避-10"); mod_evasion -= 10
                 if stance_lv >= 2: mod_hp += 2
                 if stance_lv >= 3: mod_hp += 2
             elif stance == "地の構え":
@@ -1078,9 +1078,9 @@ def calculate():
                 if stance_lv >= 2: mod_stamina += 1
                 if stance_lv >= 3: mod_hp += 2
             elif stance == "蜻蛉の構え":
-                if stance_lv >= 1: fan_sys_texts.append("【蜻蛉の構えLv1】(※発声必須) 初撃威力+30% / 被ダメ+30% / 回避-5"); mod_evade -= 5
-                if stance_lv >= 2: fan_sys_texts.append("【蜻蛉の構えLv2】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)"); mod_evade -= 5
-                if stance_lv >= 3: fan_sys_texts.append("【蜻蛉の構えLv3】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)"); mod_evade -= 5
+                if stance_lv >= 1: fan_sys_texts.append("【蜻蛉の構えLv1】(※発声必須) 初撃威力+30% / 被ダメ+30% / 回避-5"); mod_evasion -= 5
+                if stance_lv >= 2: fan_sys_texts.append("【蜻蛉の構えLv2】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)"); mod_evasion -= 5
+                if stance_lv >= 3: fan_sys_texts.append("【蜻蛉の構えLv3】初撃威力+10% / 被ダメ+10% / 回避-5 (累積)"); mod_evasion -= 5
                 warning_errors.append("💡【蜻蛉の構え】「天の構えLv2」の解放が前提条件です。")
         if school != "(なし)":
             elf_races = ["ハイエルフ", "ダークエルフ", "ウッドエルフ", "スノウエルフ", "フレイムエルフ"]
@@ -1156,7 +1156,7 @@ def calculate():
             elif s2 == "フォアマン": noc_sys_texts.append(f"【2層: {s2}】制作系(前提無)1つ初期値70(1層上書き可)")
             elif s2 == "アーティスト": noc_sys_texts.append(f"【2層: {s2}】1層スカラー技能失敗時、基準値30で再判定可(1回)")
             elif s2 == "インテレクチュアル": noc_sys_texts.append(f"【2層: {s2}】学術系(芸術除く/前提無)1つ初期値70(1層上書き可)")
-            elif s2 == "スルース": noc_sys_texts.append(f"【2層: {s2}】回避+1(上限突破) / 隠れる初期値+10"); mod_evade += 1
+            elif s2 == "スルース": noc_sys_texts.append(f"【2層: {s2}】回避+1(上限突破) / 隠れる初期値+10"); mod_evasion += 1
             elif s2 == "アンダーリング": mod_hp += 5; noc_sys_texts.append(f"【2層: {s2}】名声-1 / 解錠or盗み初期値+20")
             elif s2 == "オブザーバー": mod_mp += 5; noc_sys_texts.append(f"【2層: {s2}】捜索初期値+15")
         if s3 != "(なし)":
@@ -1165,8 +1165,8 @@ def calculate():
             elif s3 == "機動偵察兵": mod_hp += 5; noc_sys_texts.append(f"【3層: {s3}】古びた偵察バイク入手")
             elif s3 == "選抜射手": noc_sys_texts.append(f"【3層: {s3}】対物狙撃銃威力+20% / マークスマンライフル使用可")
             elif s3 == "特殊工作兵": noc_sys_texts.append(f"【3層: {s3}】対人ダメ+10%, 被ダメ-5%, 対兵器ダメ+10%(重兵器時)")
-            elif s3 == "潜入兵": noc_sys_texts.append(f"【3層: {s3}】サプレッサー威力+15% / 潜入戦闘服装備可 / 回避+5"); mod_evade += 5
-            elif s3 == "空挺兵": noc_sys_texts.append(f"【3層: {s3}】落下ダメ-50%, 装備弾倉数+2, 回避+5, 被ダメ-10%"); mod_evade += 5
+            elif s3 == "潜入兵": noc_sys_texts.append(f"【3層: {s3}】サプレッサー威力+15% / 潜入戦闘服装備可 / 回避+5"); mod_evasion += 5
+            elif s3 == "空挺兵": noc_sys_texts.append(f"【3層: {s3}】落下ダメ-50%, 装備弾倉数+2, 回避+5, 被ダメ-10%"); mod_evasion += 5
             elif s3 == "ベテラン": mod_hp += 5; mod_mp += 5; noc_sys_texts.append(f"【3層: {s3}】与ダメージ+10%")
             elif s3 == "クロスファイア": noc_sys_texts.append(f"【3層: {s3}】銃撃ダメ+10%, 弾倉数+2 / スキル『クロスファイア』(機関銃失敗時MP-15で再射撃)")
             elif s3 == "メンアットアームズ": noc_sys_texts.append(f"【3層: {s3}】コンバットアーマー装備可 / 被ダメージ-10%")
@@ -1185,13 +1185,13 @@ def calculate():
             elif s4 == "狙撃手": noc_sys_texts.append(f"【4層: {s4}】技能『狙撃』取得(初弾威力+100%, 射撃後1T被ダメ+50%)")
             elif s4 == "行進射撃": noc_sys_texts.append(f"【4層: {s4}】戦技『行進射撃』(2T機関銃立射命中減少半減, 弾数固定, 威力+20%, 被ダメ+30%)")
             elif s4 == "特殊工作兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)対人ダメ+20%, 被ダメ-10%, 対兵器ダメ+20%(重兵器時)")
-            elif s4 == "潜入兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)サプレッサー威力+30% / 回避+7"); mod_evade += 7
-            elif s4 == "空挺兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)落下ダメ-60%, 装備弾倉数+3, 回避+5, 被ダメ-20%"); mod_evade += 5
+            elif s4 == "潜入兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)サプレッサー威力+30% / 回避+7"); mod_evasion += 7
+            elif s4 == "空挺兵Lv2": noc_sys_texts.append(f"【4層: {s4}】(※1層上書)落下ダメ-60%, 装備弾倉数+3, 回避+5, 被ダメ-20%"); mod_evasion += 5
             elif s4 == "コンドッティエーレ": mod_hp += 10; mod_mp += 10; noc_sys_texts.append(f"【4層: {s4}】(※3層上書)与ダメージ+20% / 被ダメージ-10%")
             elif s4 == "ハイランダー": mod_hp -= 30; noc_sys_texts.append(f"【4層: {s4}】近接武器ダメ+40%, 銃撃ダメ+20%, 被ダメ+40%")
-            elif s4 == "コンキスタドール": mod_hp += 5; mod_mp -= 30; noc_sys_texts.append(f"【4層: {s4}】索敵+5(突破) / 回避+5 / 被ダメ-10% / 銃撃ダメ+20%"); mod_evade += 5
+            elif s4 == "コンキスタドール": mod_hp += 5; mod_mp -= 30; noc_sys_texts.append(f"【4層: {s4}】索敵+5(突破) / 回避+5 / 被ダメ-10% / 銃撃ダメ+20%"); mod_evasion += 5
             elif s4 == "グラディエーター": noc_sys_texts.append(f"【4層: {s4}】近接連撃回数+1 / 近接武器ダメージ+10%")
-            elif s4 == "ティーガー": mod_hp += 10; mod_mp += 10; mod_stamina += 2; noc_sys_texts.append(f"【4層: {s4}】重機関銃装備可 / 被ダメージ-10% / 回避-20"); mod_evade -= 20
+            elif s4 == "ティーガー": mod_hp += 10; mod_mp += 10; mod_stamina += 2; noc_sys_texts.append(f"【4層: {s4}】重機関銃装備可 / 被ダメージ-10% / 回避-20"); mod_evasion -= 20
             elif s4 == "アルチザン": noc_sys_texts.append(f"【4層: {s4}】アイテム製作技能値+5(突破) / 製作アイテム耐久値+10%")
             elif s4 == "ローリエット": noc_sys_texts.append(f"【4層: {s4}】上級芸術技能解禁 / 1つ初期値35で取得可(要:通常芸術70)")
             elif s4 == "プロフェッサー": mod_mp += 10; bonus_mental += 10; noc_sys_texts.append(f"【4層: {s4}】70以上の高等技能値+5(突破)")

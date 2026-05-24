@@ -490,8 +490,6 @@ def calculate():
                 stats["筋力"] += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 stats["商才"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 add_stats_group(5 if lineage == 100 else (4 if lineage >= 71 else 3), exclude=["体格", "敏捷", "筋力", "商才"])
-                stats["体格"] -= 30
-                stats["敏捷"] -= 30
             elif race == "フレイムエルフ":
                 mod_hp += 20 if lineage == 100 else (14 if lineage >= 71 else 8)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -532,6 +530,8 @@ def calculate():
                 add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
             
         if race == "フェルダー": stats["体格"] = int(stats["体格"] * 0.7)
+        if race == "コブラナイ": stats["体格"] = int(stats["体格"] * 0.7)
+        if race == "コブラナイ": stats["敏捷"] = int(stats["敏捷"] * 0.7)
         if race == "ゴブリン":
                 if lineage == 100: stats["知力"] = int(stats["知力"] * 0.9)
                 elif lineage >= 71: stats["知力"] = int(stats["知力"] * 0.8)

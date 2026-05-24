@@ -1394,6 +1394,18 @@ def calculate():
             over_limit_stats.append(f"{k} (素ステ{stats[k]} → {limit})")
             stats[k] = limit
 
+    # === フリー手入力バフの加算 ===
+    val_extra_hp = p.get('extra_hp', 0)
+    val_extra_mp = p.get('extra_mp', 0)
+    val_extra_stamina = p.get('extra_stamina', 0)
+    val_extra_evasion = p.get('extra_evasion', 0)
+    val_extra_text = p.get('extra_text', "")
+
+    mod_hp += val_extra_hp
+    mod_mp += val_extra_mp
+    mod_stamina += val_extra_stamina
+    mod_evasion += val_extra_evasion
+
     # --- 最終計算 ---
     final_hp = (stats["生命"] + stats["体格"]) // 5 + mod_hp
     final_mp = (stats["知力"] + stats["精神"]) // 5 + mod_mp
@@ -1698,6 +1710,20 @@ with col_left:
         spec_2 = st.selectbox("└ 2層 (Lv3)", spec_lists[1], index=si('spec_2', spec_lists[1]), key='spec_2')
         spec_3 = st.selectbox("└ 3層 (Lv4)", spec_lists[2], index=si('spec_3', spec_lists[2]), key='spec_3')
         spec_4 = st.selectbox("└ 4層 (Lv5)", spec_lists[3], index=si('spec_4', spec_lists[3]), key='spec_4')
+        
+    st.markdown("---")
+    st.markdown("### 🏠 クラン・エシュロン・その他バフ（手入力）")
+    st.caption("※クランハウスの家具効果、ハウジングなどのPLや所属によって変動するバフはこちらに入力してください。")
+
+    col_ex1, col_ex2 = st.columns(2)
+    with col_ex1:
+        st.number_input("追加HP", value=st.session_state.get('extra_hp', 0), step=1, key='extra_hp')
+        st.number_input("追加スタミナ", value=st.session_state.get('extra_stamina', 0), step=1, key='extra_stamina')
+    with col_ex2:
+        st.number_input("追加MP", value=st.session_state.get('extra_mp', 0), step=1, key='extra_mp')
+        st.number_input("追加回避（通常）", value=st.session_state.get('extra_evasion', 0), step=1, key='extra_evasion')
+
+    st.text_input("その他追加能力・テキスト", value=st.session_state.get('extra_text', ""), key='extra_text', placeholder="例:クランハウス内でのみ料理技能+30")
 
 # ===================================================
 # 中央カラム: ステータス入力

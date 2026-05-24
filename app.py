@@ -728,8 +728,7 @@ def calculate():
     if past1 == "①孤独": stats["筋力"] += 5; stats["知力"] -= 5
     if past1 == "③愛情": stats["知力"] += 5; stats["筋力"] -= 5
     if past1 == "④禁断": stats["精神"] += 5; stats["生命"] -= 5
-    if past1 == "⑤特別":
-        for k in base_stats_names: stats[k] += 1
+    if past1 == "⑤特別": add_stats_group +=1
     if past1 == "⑥苦痛": stats["敏捷"] += 5; stats["精神"] -= 5
     if past2 == "①暴力": stats["筋力"] += 5; stats["知力"] -= 5
     elif past2 == "➁矜持": stats["精神"] += 5

@@ -1567,6 +1567,7 @@ MP: {final_mp}
 知力AB: {ab_magic_str}
 {fan_sys_section}{noc_sys_section}{sub_section}{attr_sys_section}{blessing_section}{extra_buff_section}"""
 
+    return result_text
 
 # ===================================================
 # 4. Streamlit メインUI

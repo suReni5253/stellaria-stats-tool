@@ -1549,8 +1549,6 @@ def calculate():
 属性: {attr_text}　|　家柄: {lineage}
 出自: {bg}{bg_sub_text}　|　加護: {blessing}
 
-{race_skill_text}
-
 【ジョブ】
 {job_info_text}
 

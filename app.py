@@ -1579,8 +1579,11 @@ def calculate():
                     mod_evasion += 2
                 elif blessing_str == "雷影神の加護":
                     mod_evasion -= 5
+                elif blessing_str in ["地影神の加護", "風影神の加護"]:
+                    mod_stamina -= 3
+                if is_blessing_active:
                 
-                blessing_text_out = f"【加護】{blessing_str}適用"
+                    blessing_text_out = f"【加護】{blessing_str}適用"
                 
     # --- 個別最大値チェック ---
     over_limit_stats = []
@@ -1670,9 +1673,6 @@ def calculate():
         final_hp = int(final_hp * 0.7)
     shield_hp_str = ""
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
-    if is_blessing_active:
-        if blessing_str in ["地影神の加護", "風影神の加護"]:
-            final_stamina -= 3
     if is_blessing_active:
         if blessing_str == "雪神の加護":
             shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"

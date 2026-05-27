@@ -1709,8 +1709,10 @@ def calculate():
     bg_sub_text = f" ({bg_sub})" if bg_sub else ""
     blessing_section = f"\n【加護の効果】\n{blessing_text_out}\n" if blessing_text_out else ""
     magic_sp_text = f"\n魔法専用技能P: {magic_sp}" if magic_sp > 0 else ""
-    job_info_text = f"一次職1: {job1_1} Lv{job1_1_lv}　|　一次職2: {job1_2} Lv{job1_2_lv}\n二次職: {job2} Lv{job2_lv}"
-    if job_texts: job_info_text += f"\n(適用パッシブ: {', '.join(job_texts)})"
+    job_info_text = f"一次職1: {job1_1} Lv{job1_1_lv}　|　一次職2: {job1_2} Lv{job1_2_lv}　|　一次職3: {job1_3} Lv{job1_3_lv}　|　一次職4: {job1_4} Lv{job1_4_lv}\n二次職: {job2} Lv{job2_lv}"
+    if job_texts:
+        passive_lines = "\n".join(f"  {t}" for t in job_texts)
+        job_info_text += f"\n【適用パッシブ】\n{passive_lines}"
     final_ab_melee = (stats['筋力'] // 10) + bonus_ab_melee
     final_ab_magic = (stats['知力'] // 10) + bonus_ab_magic
     ab_melee_str = f"{final_ab_melee}" if bonus_ab_melee == 0 else f"{final_ab_melee} (ボーナス+{bonus_ab_melee}込み)"

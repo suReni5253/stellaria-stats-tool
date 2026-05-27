@@ -1671,10 +1671,11 @@ def calculate():
     shield_hp_str = ""
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
     if is_blessing_active:
+        if blessing_str in ["地影神の加護", "風影神の加護"]:
+            final_stamina -= 3
+    if is_blessing_active:
         if blessing_str == "雪神の加護":
             shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"
-        if blessing_str in ["地影神の加護", "風影神の加護"]:
-            final_stamina = max(1, final_stamina - 3)
     if race == "炉心異常体": 
         final_stamina //= 2
     # 1. 基礎値（敏捷の50%）

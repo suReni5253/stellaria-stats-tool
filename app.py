@@ -858,6 +858,8 @@ def calculate():
     # --- ジョブ処理 ---
     job1_1 = p['job1_1']; job1_1_lv = int(p['job1_1_lv'])
     job1_2 = p['job1_2']; job1_2_lv = int(p['job1_2_lv'])
+    job1_3 = p['job1_3']; job1_3_lv = int(p['job1_3_lv'])
+    job1_4 = p['job1_4']; job1_4_lv = int(p['job1_4_lv'])
     job2 = p['job2']; job2_lv = int(p['job2_lv'])
     magic_sp = 0
     job_texts = []
@@ -865,46 +867,218 @@ def calculate():
     if origin == "ファンタジア":
         def apply_job_passive_fan(job_name, lv):
             nonlocal magic_sp, mod_mp, mod_hp, mod_stamina
-            if job_name == "治癒術師":
+            
+            if job_name == "旅騎士": 
+                job_texts.append("旅騎士Lv0: 何もなし")
+                if lv >= 1: job_texts.append("旅騎士Lv1: 職業戦技『誓剣』【1T自身が与える片手剣/両手剣ダメージ20%UP/CT3】")
+                if lv >= 2: job_texts.append("旅騎士Lv2: 誓剣の効果ターンが1ターン増加")
+                if lv >= 3: job_texts.append("旅騎士Lv3: 職業戦技『ブレスオブザソード』【1T敵からの全ダメージに累減10%/CT5】")
+                
+            elif job_name == "軽槍兵": 
+                job_texts.append("軽槍兵Lv0: 職業特性『ファランクス』【片手盾と片手槍装備時、攻撃威力+20%&防護点+3】")
+                if lv >= 1: job_texts.append("軽槍兵Lv1: 職業戦技『閃槍』【1T自身の片手槍/両手槍のダメージ+20%/CT3】")
+                if lv >= 2: job_texts.append("軽槍兵Lv2: 閃槍の効果ターンが1ターン増加")
+                if lv >= 3: job_texts.append("軽槍兵Lv3: 職業戦技『ブレークポイント』【スタミナ5消費で1T槍威力+1d/CT6】")
+                
+            elif job_name == "修練者": 
+                job_texts.append("修練者Lv0: 何もなし")
+                if lv >= 1: job_texts.append("修練者Lv1: 職業戦技『超克』【1T自身が与えるダメージ+10%/CT3】")
+                if lv >= 2: job_texts.append("修練者Lv2: 超克の効果ターンが1ターン増加")
+                if lv >= 3: job_texts.append("修練者Lv3: 職業戦技『修練の果てに』【1T攻撃命中+2(上限突破)/CT5】")
+                
+            elif job_name == "魔術師": 
+                magic_sp += 40 if lv >= 2 else 0; magic_sp += 40 if lv >= 3 else 0
+                job_texts.append("魔術師Lv0: 何もなし")
+                if lv >= 1: job_texts.append("魔術師Lv1: 職業戦技『魔道』【1T自身が与える魔法ダメージ(魔術のみ)20%UP/CT3】")
+                if lv >= 2: job_texts.append("魔術師Lv2: 魔道の効果ターン+1 / 魔法専用技能P+40")
+                if lv >= 3: job_texts.append("魔術師Lv3: 職業戦技『アルス・ノトリア』【魔法1T2発射(2発目命中半減＆下位魔法のみ)/CT5】 / 魔法専用技能P+40")
+                
+            elif job_name == "魔法術師": 
+                magic_sp += 40 if lv >= 2 else 0; magic_sp += 40 if lv >= 3 else 0
+                job_texts.append("魔法術師Lv0: 何もなし")
+                if lv >= 1: job_texts.append("魔法術師Lv1: 職業戦技『衝撃魔術』【敵が精神抵抗成功時、魔法威力+20%】")
+                if lv >= 2: job_texts.append("魔法術師Lv2: 衝撃魔術の威力上昇が+40%に上昇 / 魔法専用技能P+40")
+                if lv >= 3: job_texts.append("魔法術師Lv3: 職業戦技『集中詠唱』【魔法威力+2D/CT5】 / 魔法専用技能P+40")
+                
+            elif job_name == "魔女": 
+                magic_sp += 30 if lv >= 1 else 0; magic_sp += 30 if lv >= 3 else 0
+                job_texts.append("魔女Lv0: 何もなし")
+                if lv >= 1: job_texts.append("魔女Lv1: 職業技能『調薬〈緑花〉』【戦闘中1回HP50%回復薬製作可能(主動作/2回まで)】 / 魔法専用技能P+30")
+                if lv >= 2: job_texts.append("魔女Lv2: 調薬〈緑花〉が助動作となり、調薬後にもう一度行動可能")
+                if lv >= 3: job_texts.append("魔女Lv3: 職業技能『調薬〈青花〉』【戦闘中1回MP50%回復薬製作可能(主動作/2回まで)】 / 魔法専用技能P+30")
+                
+            elif job_name == "治癒術師":
                 mod_mp += 5; magic_sp += 40 if lv >= 2 else 0; magic_sp += 40 if lv >= 3 else 0
-            elif job_name == "霊術師": mod_mp += 10
-            elif job_name == "魔力射撃士": mod_mp += 5; mod_mp += 5 if lv >= 2 else 0
+                job_texts.append("治癒術師Lv0: MP+5 / 回復魔法&神秘術の消費MP-10％")
+                if lv >= 1: job_texts.append("治癒術師Lv1: 職業戦技『治癒促進』【回復魔法/回復系神秘術の回復威力+5％】")
+                if lv >= 2: job_texts.append("治癒術師Lv2: 治癒促進の回復威力+10％に上昇 / 魔法専用技能P+40")
+                if lv >= 3: job_texts.append("治癒術師Lv3: 職業戦技『癒しの手』【助動作/回復成功時、対象HP毎T+10％回復(3T)/CT5】 / 魔法専用技能P+40")
+                
+            elif job_name == "霊術師": 
+                mod_mp += 10
+                job_texts.append("霊術師Lv0: MP+10")
+                if lv >= 1: job_texts.append("霊術師Lv1: 職業戦技『精霊の呼び声』【助動作/使用後3ターンの間MP5％回復/CT5】")
+                if lv >= 2: job_texts.append("霊術師Lv2: 精霊の呼び声が事前動作になり、MP回復効果が10％に強化")
+                if lv >= 3: job_texts.append("霊術師Lv3: 職業戦技『精霊の鼓舞』【助動作/味方全体(最大4名)のMP+10％回復/CT5】")
+                
+            elif job_name == "魔力射撃士": 
+                mod_mp += 5; mod_mp += 5 if lv >= 2 else 0
+                job_texts.append("魔力射撃士Lv0: MP+5")
+                if lv >= 1: job_texts.append("魔力射撃士Lv1: 職業戦技『魔力射法』【事前動作/魔導弓&魔導銃威力+20％/CT3】")
+                if lv >= 2: job_texts.append("魔力射撃士Lv2: MP+5")
+                if lv >= 3: job_texts.append("魔力射撃士Lv3: 魔力射法の威力+30％に変化")
+                
             elif job_name == "蛮戦士":
                 if lv >= 3: mod_hp += 5; mod_stamina += 2
-            elif job_name == "戦士": mod_hp += 3; mod_mp += 3 if lv >= 2 else 0
-            elif job_name == "冒険者": mod_hp += 5; mod_mp += 5
-            elif job_name == "魔術師": magic_sp += 40 if lv >= 2 else 0; magic_sp += 40 if lv >= 3 else 0
-            elif job_name == "魔法術師": magic_sp += 40 if lv >= 2 else 0; magic_sp += 40 if lv >= 3 else 0
-            elif job_name == "魔女": magic_sp += 30 if lv >= 1 else 0; magic_sp += 30 if lv >= 3 else 0
+                job_texts.append("蛮戦士Lv0: 職業戦技『蛮力』【片手斧/両手斧使用時のみ白兵AB+1(常時)】")
+                if lv >= 1: job_texts.append("蛮戦士Lv1: 職業戦技『パワーブロー』【1T片手斧/両手斧威力+30%/CT1】")
+                if lv >= 2: job_texts.append("蛮戦士Lv2: 『蛮力』の白兵AB+1が+3へ上昇")
+                if lv >= 3: job_texts.append("蛮戦士Lv3: HP+5/スタミナ+2 / パワーブローの持続T+1&CT+1")
+                
+            elif job_name == "戦士": 
+                mod_hp += 3; mod_mp += 3 if lv >= 2 else 0
+                job_texts.append("戦士Lv0: HP+3")
+                if lv >= 1: job_texts.append("戦士Lv1: 職業戦技『ファイトテクニック』【片手武器の連撃数+1(常時)】")
+                if lv >= 2: job_texts.append("戦士Lv2: MP+3")
+                if lv >= 3: job_texts.append("戦士Lv3: 職業戦技『アタックリベンジ』【被ダメ10%以上弾き時、受動作でカウンター可(3連撃迄)/CT2】")
+                
+            elif job_name == "冒険者": 
+                mod_hp += 5; mod_mp += 5
+                job_texts.append("冒険者Lv0: HP+5/MP+5")
+                if lv >= 1: job_texts.append("冒険者Lv1: 職業戦技『冒険の心構え』【助動作/1T自身の攻撃力+10％&全防護点+3/CT5】")
+                if lv >= 2: job_texts.append("冒険者Lv2: 先制判定の索敵失敗時、基準値25で振りなおし可")
+                if lv >= 3: job_texts.append("冒険者Lv3: 職業戦技『冒険の旅路』【事前動作/1T攻撃+5％,全防御+5％,全防護+2,回避+2(1戦闘1回)】")
+                
+            elif job_name == "軽業師":
+                job_texts.append("軽業師Lv0: 何もなし")
+                if lv >= 1: job_texts.append("軽業師Lv1: 職業戦技『ラウンド・トリップ』【1T短剣の攻撃ダメ+25%/CT5】")
+                if lv >= 2: job_texts.append("軽業師Lv2: ラウンドトリップの攻撃ダメ+35%に上昇")
+                if lv >= 3: job_texts.append("軽業師Lv3: 職業戦技『デッドリィ・トリップ』【1T短剣攻撃1回につき2回分ダメージ(最大3連撃)/CT5】")
+                
+            elif job_name == "遊撃師":
+                job_texts.append("遊撃師Lv0: 【遊撃の要】メイン弓時、サブ枠でダガー2本装備可(連撃可) / 弓とダガーの切替が事前動作で可")
+                if lv >= 1: job_texts.append("遊撃師Lv1: 職業戦技『縦横無尽』【前衛時、弓攻撃前にダガー最大三連撃可(当該ターン全攻撃ダメ-50%)】")
+                if lv >= 2: job_texts.append("遊撃師Lv2: 職業戦技『旋風の如く』【弓連射可能回数+1】")
+                if lv >= 3: job_texts.append("遊撃師Lv3: 職業戦技『シューティングスター』【1T弓と短剣の威力+20%/CT5】")
+                
+            elif job_name == "射撃士":
+                job_texts.append("射撃士Lv0: 何もなし")
+                if lv >= 1: job_texts.append("射撃士Lv1: 職業戦技『誓撃』【1T自身が与える射撃物理ダメ20%UP/CT3】")
+                if lv >= 2: job_texts.append("射撃士Lv2: 誓撃の効果ターンが1ターン増加")
+                if lv >= 3: job_texts.append("射撃士Lv3: 職業戦技『的中』【1T射撃武器の連撃数+1(装弾1発の連撃不可武器は確定命中)/CT5】")
 
         if job1_1 != "(なし)": apply_job_passive_fan(job1_1, job1_1_lv)
         if job1_2 != "(なし)": apply_job_passive_fan(job1_2, job1_2_lv)
+        if job1_3 != "(なし)": apply_job_passive_fan(job1_3, job1_3_lv) # 👈 追加
+        if job1_4 != "(なし)": apply_job_passive_fan(job1_4, job1_4_lv) # 👈 追加
 
         if job2 != "(なし)":
             if lvl_num < 4 and job2 != "武士": warning_errors.append("【二次職エラー】二次職はLv4以上から選択可能です。")
             elif lvl_num < 5 and job2 == "武士": warning_errors.append("【二次職エラー】武士はLv5以上から選択可能です。")
+            
             def check_job_req(req1, req2):
-                has_req1 = (job1_1 == req1 and job1_1_lv >= 3) or (job1_2 == req1 and job1_2_lv >= 3)
-                has_req2 = (job1_1 == req2 and job1_1_lv >= 3) or (job1_2 == req2 and job1_2_lv >= 3)
+                my_jobs = {job1_1: job1_1_lv, job1_2: job1_2_lv, job1_3: job1_3_lv, job1_4: job1_4_lv}
+                has_req1 = my_jobs.get(req1, 0) >= 3
+                has_req2 = my_jobs.get(req2, 0) >= 3
                 if not (has_req1 and has_req2): warning_errors.append(f"【二次職条件未達】{job2}の条件({req1}Lv3＆{req2}Lv3)を満たしていません。")
+            
             if job2 == "騎士":
-                check_job_req("旅騎士", "修練者"); mod_hp += 15; job_texts.append("騎士【全防御力+25】")
-                if job2_lv >= 2: mod_hp += 5; job_texts.append("騎士Lv2【全防御力+25(累計+50)】")
-            elif job2 == "魔導騎士": check_job_req("旅騎士", "魔術師"); mod_mp += 10 if job2_lv >= 2 else 0
+                check_job_req("旅騎士", "修練者"); mod_hp += 15
+                job_texts.append("騎士Lv0: HP+15/全防御力+25】")
+                if job2_lv >= 1: job_texts.append("騎士Lv1: 職業戦技『銀剣』【1ターンの間自身が敵に与える片手剣/両手剣ダメージ+30%/クールタイム3ターン〈戦技ターン終了時からカウント〉/ナイツオブアラウンドと併用不可】")
+                if job2_lv >= 2: mod_hp += 5; job_texts.append("騎士Lv2: 銀剣の効果ターンが1ターン増加/HP+5/全防御力+25")
+                if job2_lv >= 3: job_texts.append("騎士Lv3: 職業戦技『ナイツオブアラウンド』【1ターンの間敵からのダメージに累減20%/発動中は攻撃不可能/クールタイム4ターン〈戦技ターン終了時からカウント〉】")
+                if job2_lv >= 4: job_texts.append("騎士Lv4: ナイツオブアラウンド中、威力-50%で敵に攻撃可能")
+            
+            elif job2 == "魔導騎士": 
+                check_job_req("旅騎士", "魔術師")
+                job_texts.append("魔導騎士Lv0: 職業戦技『クイックマジック』【低級魔法を助動作として発動可能/常時発動：細剣威力+30%】")
+                if job2_lv >= 1: job_texts.append("魔導騎士Lv1: 職業戦技『魔力剣術』【助動作で指定の低級魔法を判定し、両手剣or細剣に属性と魔法を1ターン付与可能/付与中の攻撃は通常攻撃と付与した魔法攻撃が重複する/発動後3ターンのCT】（付与された魔法は精神抵抗を受けない/魔力剣術発動時は杖を手持ちでなくても一時的に付与用の魔法を発動可能）")
+                if job2_lv >= 2: mod_mp += 10; job_texts.append("魔導騎士Lv2: MP+10/クイックマジック：中級魔法まで発動可能に変化")
+                if job2_lv >= 3: job_texts.append("魔導騎士Lv3: 魔力剣術の対象に片手剣を追加/ 魔力剣術の継続ターンが2ターンに変化/常時魔導剣威力+20%")
+                if job2_lv >= 4: job_texts.append("魔導騎士Lv4: 職業戦技『ソーサリースラッシュ』【事前動作/MP-50/魔力剣術発動中のみ発動可能/1ターンの間、両手剣or細剣の威力+20%&付与された魔法威力+50%&両手剣or細剣の斬撃に射撃特性を付与/クールタイム3ターン】")
+            
             elif job2 == "魔導士":
-                check_job_req("魔術師", "修練者"); mod_mp += 10 if job2_lv >= 2 else 0; mod_hp += 5 if job2_lv >= 4 else 0
-            elif job2 == "魔導術師": check_job_req("魔術師", "魔法術師"); mod_mp += 10; mod_mp += 10 if job2_lv >= 2 else 0
-            elif job2 == "魔導狙撃士": check_job_req("魔力射撃士", "魔術師"); mod_mp += 7; mod_mp += 8 if job2_lv >= 2 else 0
-            elif job2 == "錬金術師": check_job_req("魔女", "修練者"); mod_mp += 10
-            elif job2 == "治癒神官": check_job_req("治癒術師", "修練者"); mod_mp += 10
-            elif job2 == "死霊術師": check_job_req("霊術師", "魔女"); mod_mp += 10
-            elif job2 == "竜騎士": check_job_req("軽槍兵", "軽業師"); mod_mp += 5 if job2_lv >= 2 else 0
+                check_job_req("魔術師", "修練者")
+                job_texts.append("魔導士Lv0: 何もなし")
+                if job2_lv >= 1: job_texts.append("魔導士Lv1: スキル『魔力制御』【常時消費MP-10%】")
+                if job2_lv >= 2: mod_mp += 10; job_texts.append("魔導士Lv2: MP+10")
+                if job2_lv >= 3: job_texts.append("魔導士Lv3: 職業戦技【精密魔導式】【常時魔法ダメージ+20%】")
+                if job2_lv >= 4: mod_hp += 5; job_texts.append("魔導士Lv4: HP+5")
+            
+            elif job2 == "魔導術師": 
+                check_job_req("魔術師", "魔法術師"); mod_mp += 10
+                job_texts.append("魔導術師Lv0: MP+10")
+                if job2_lv >= 1: job_texts.append("魔導術師Lv1: スキル『魔導集束』【事前動作で発動/1ターンの間、被ダメージ+70％される代わりに消費MP-30%/発動後、3ターンのクールタイム】")
+                if job2_lv >= 2: mod_mp += 10; job_texts.append("魔導術師Lv2: MP+10")
+                if job2_lv >= 3: job_texts.append("魔導術師Lv3: 職業戦技【多層魔導陣】【助動作で発動/1ターンの間、被ダメージ+30％＆回避不可になる代わりに低級魔法以上の威力+40％/発動後、3ターンのクールタイム】")
+                if job2_lv >= 4: job_texts.append("魔導術師Lv4: 魔導集束、多層魔導陣のクールタイムが3ターンから2ターンに変化")
+            
+            elif job2 == "魔導狙撃士": 
+                check_job_req("魔力射撃士", "魔術師"); mod_mp += 7
+                job_texts.append("魔導狙撃士Lv0: MP+7")
+                if job2_lv >= 1: job_texts.append("魔導狙撃士Lv1: 職業戦技『魔導狙撃』【事前動作で発動/魔導弓&魔導銃の命中+5（上限突破）、威力+20％/発動後、クールタイム3ターン】")
+                if job2_lv >= 2: mod_mp += 8; job_texts.append("魔導狙撃士Lv2: MP+8")
+                if job2_lv >= 3: job_texts.append("魔導狙撃士Lv3: 魔導狙撃の威力+20％が威力+30％に変化")
+                if job2_lv >= 4: job_texts.append("魔導狙撃士Lv4: 職業戦技『エルフィンショット』【事前動作で発動/消費MP+100％/魔導弓&魔導銃の威力+1D/発動後、クールタイム5ターン】")
+            
+            elif job2 == "錬金術師": 
+                check_job_req("魔女", "修練者"); mod_mp += 10
+                job_texts.append("錬金術師Lv0: MP+10")
+                if job2_lv >= 1: job_texts.append("錬金術師Lv1: 職業技能『特殊錬金術』【調薬〈緑花/青花〉と同じ事が可能（HP/MP回復量が70%に上昇）/錬金術の攻撃威力+1D】")
+                if job2_lv >= 2: job_texts.append("錬金術師Lv2: 作製/鍛冶/設計の成功率+5%/錬金術の攻撃威力+30％")
+                if job2_lv >= 3: job_texts.append("錬金術師Lv3: 職業技能『赤のフィロソファー』【戦闘時のみ/自身のHPを事前動作で即時50%回復/MP-30/発動後、1ターンの間は錬金術の消費MP-20％/CT6ターン〈戦技ターン終了時からカウント〉】")
+                if job2_lv >= 4: job_texts.append("錬金術師Lv4: 職業技能『青のフィロソファー』【戦闘時のみ/自身のMPを事前動作で即時50%回復/発動後、1ターンの間は錬金術の威力+1D/MP-30/CT6ターン〈戦技ターン終了時からカウント〉】")
+            
+            elif job2 == "治癒神官": 
+                check_job_req("治癒術師", "修練者"); mod_mp += 10
+                job_texts.append("治癒神官Lv0: MP+10")
+                if job2_lv >= 1: job_texts.append("治癒神官Lv1: 職業戦技『慈愛の手』【助動作/MP消費+200％/効果継続:1ターン/神秘術か回復魔法を使用すると、味方単体の火傷、裂傷、凍傷、麻痺、毒の状態異常を回復する/使用後3ターンのCT】")
+                if job2_lv >= 2: job_texts.append("治癒神官Lv2: 慈愛の手のMP消費+200％が+100％に低下")
+                if job2_lv >= 3: job_texts.append("治癒神官Lv3: 職業戦技『癒しの祈り』【助動作で発動/MP消費+200％/効果継続:1ターン/回復魔法か神秘術を使用した場合、味方単体の呪いの状態異常を回復する/この戦技を使用して敵を神秘術で攻撃した場合、威力+3D/CT5ターン〈戦技ターン終了時からカウント〉】")
+                if job2_lv >= 4: job_texts.append("治癒神官Lv4: 職業戦技『慈悲の祝福』【パッシブ/味方を蘇生魔法か蘇生系神秘術で蘇生した場合、蘇生時のデメリット（命中低下等）を無効化する】")
+            
+            elif job2 == "死霊術師": 
+                check_job_req("霊術師", "魔女"); mod_mp += 10
+                job_texts.append("死霊術師Lv0: MP+10")
+                if job2_lv >= 1: job_texts.append("死霊術師Lv1: 職業戦技『死霊の嘆き』【パッシブ/死霊術の威力+10％&消費MP-10％】")
+                if job2_lv >= 2: job_texts.append("死霊術師Lv2: 死霊の嘆きの威力が+10％から+20％に強化")
+                if job2_lv >= 3: job_texts.append("死霊術師Lv3: 職業戦技『死霊送り』【助動作で発動/MP消費+100％/効果継続:1ターン/敵を死霊術で攻撃すると、回復不可能の呪いダメージとなる/CT5ターン〈戦技ターン終了時からカウント〉】")
+                if job2_lv >= 4: job_texts.append("死霊術師Lv4: 職業戦技『魂接ぎの禁術』【パッシブ/味方を死霊術で蘇生した際、蘇生後デメリットを無効化する/自身の穢れが1増えるごとに、死霊術の威力が+20％されていく（最大+40％）】")
+            
+            elif job2 == "竜騎士": 
+                check_job_req("軽槍兵", "軽業師")
+                job_texts.append("竜騎士Lv0: 何もなし")
+                if job2_lv >= 1: job_texts.append("竜騎士Lv1: 職業戦技『飛竜撃』【槍を装備している場合、初撃が確定で同時2発ダメージになる/乗用物に騎乗しているときの与ダメージ+20%/亜竜などの竜種に騎乗している場合、+20%→+50%に上昇する】")
+                if job2_lv >= 2: mod_mp += 5; job_texts.append("竜騎士Lv2: 槍攻撃時、6連撃目まではファンブル率が上昇しなくなる/MP+5")
+                if job2_lv >= 3: job_texts.append("竜騎士Lv3: 職業戦技『反射回避』【MPを-30/スタミナ-10/敵の攻撃を俊敏値で回避可能/CT1ターン】")
+                if job2_lv >= 4: job_texts.append("竜騎士Lv4: 職業戦技『ドラゴンブレス』【短銃(二丁拳銃は除く)をサブウェポンに装備している場合、常時威力が+100%される(乗用物に騎乗してる際は威力が+150%に上昇)/短銃の事前射撃後の槍攻撃ダメージ+30%】")
+            
             elif job2 == "狂戦士":
                 check_job_req("戦士", "蛮戦士"); mod_hp += 5
-                if job2_lv >= 2: mod_stamina += 2
-                if job2_lv >= 4: bonus_ab_melee += 5
-            elif job2 == "銃士": check_job_req("射撃士", "遊撃師")
-            elif job2 == "武士": check_job_req("旅騎士", "修練者"); mod_hp += 10
+                job_texts.append("狂戦士Lv0: HP+5")
+                if job2_lv >= 1: job_texts.append("狂戦士Lv1: 職業戦技『バトルクライ』【事前動作で発動/精神限界-5&スタミナ-2/発動後1ターンの間、被ダメージ-50％&斧系武器の威力+20％/発動後、3ターンのCT&1ターンの間、被ダメージ+50％&全行動不可（受動作も不可）】")
+                if job2_lv >= 2: mod_stamina += 2; job_texts.append("狂戦士Lv2: スタミナ+2")
+                if job2_lv >= 3: job_texts.append("狂戦士Lv3: 職業戦技【狂暴猛撃】【助動作で発動/1ターンの間、斧系武器へと防護点・ダメージカット率半減を付与。ただし、発動ターン中は攻撃ダメージ-50%/発動後、3ターンのCT】")
+                if job2_lv >= 4: bonus_ab_melee += 5; job_texts.append("狂戦士Lv4: 武器攻撃時の白兵AB+5")
+            
+            elif job2 == "銃士": 
+                check_job_req("射撃士", "遊撃師")
+                job_texts.append("銃士Lv0: 何もなし")
+                if job2_lv >= 1: job_texts.append("銃士Lv1: 職業戦技『ヴォレーファイア』【1ターンの間、銃撃ダメージ+100%(長銃のみ適用)/クールタイム3ターン〈戦技ターン終了時からカウント〉】")
+                if job2_lv >= 2: job_texts.append("銃士Lv2: ヴォレーファイアの持続ターン数+1")
+                if job2_lv >= 3: job_texts.append("銃士Lv3: 職業戦技『カウンターマーチ』【常時銃撃威力+20%】")
+                if job2_lv >= 4: job_texts.append("銃士Lv4: カウンターマーチの効果が+20%→+30%")
+            
+            elif job2 == "武士": 
+                check_job_req("旅騎士", "修練者"); mod_hp += 10
+                job_texts.append("武士Lv0: HP+10")
+                if job2_lv >= 1: job_texts.append("武士Lv1: 職業戦技『明鏡止水』【常時発動/居合使用時、刀/大太刀ダメージ+50%】")
+                if job2_lv >= 2: job_texts.append("武士Lv2: 明鏡止水のダメージ増加が+100%に上昇/刀の弾き値+2")
+                if job2_lv >= 3: job_texts.append("武士Lv3: 職業戦技『桜花爛漫』【常時発動/居合使用時、〈刀/大太刀〉による【消費MP】が-2】")
+                if job2_lv >= 4: job_texts.append("""武士Lv4: 明鏡止水のダメージ増加が+150%に上昇/剣戟を発動した際、一撃目のMP増加は無効可能（ただし、一撃目のMP増加を無効にした際は二撃目も必ず剣戟でなくてはならない）
+職業戦技『武士道』【常時発動/剣戟使用時、居合威力+50%】""")
+
             elif job2 == "忍":
                 check_job_req("軽業師", "遊撃師")
                 job_texts.append("忍Lv0: 忍術【魔導剣&脇差威力+20% / 回避+2(突破)】"); eva_limit_break += 2
@@ -937,8 +1111,14 @@ def calculate():
                 if job2_lv >= 4: job_texts.append("弓騎士Lv4: アーチェリーオブバトルライン強化【発動中、射撃威力+5】")
                 
             elif job2 == "勇者":
-                # ツール上の一次職枠は2つなので、エラーで進行不能にならないよう警告のみ出します
-                warning_errors.append("💡【勇者】前提条件として冒険者・修練者・旅騎士・魔術師のLv3が必要です。")
+                my_jobs = {job1_1: job1_1_lv, job1_2: job1_2_lv, job1_3: job1_3_lv, job1_4: job1_4_lv}
+                reqs = ["冒険者", "修練者", "旅騎士", "魔術師"]
+                has_all_reqs = True
+                for req in reqs:
+                    if my_jobs.get(req, 0) < 3:
+                        has_all_reqs = False
+                if not has_all_reqs:
+                    warning_errors.append("⚠️ 【二次職エラー】勇者の条件（冒険者, 修練者, 旅騎士, 魔術師すべてLv3以上）を満たしていません。")
                 mod_hp += 5; mod_mp += 5
                 job_texts.append("勇者Lv0: 全武器威力+10%(片手剣,両手剣,複銃剣除く)")
                 if job2_lv >= 1: job_texts.append("勇者Lv1: 勇気の剣術【片/両手剣威力+20% / 複銃剣斬撃+20% / 双剣に防御半減付与】")
@@ -1494,7 +1674,7 @@ def calculate():
         if blessing_str == "雪神の加護":
             shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"
         if blessing_str in ["地影神の加護", "風影神の加護"]:
-            final_stamina = max(final_stamina - 3)
+            final_stamina = max(1, final_stamina - 3)
     if race == "炉心異常体": 
         final_stamina //= 2
     # 1. 基礎値（敏捷の50%）
@@ -1735,10 +1915,18 @@ with col_left:
     j2a, j2b = st.columns([3, 1])
     with j2a: job1_2 = st.selectbox("一次職2", job1_list, index=si('job1_2', job1_list), key='job1_2')
     with j2b: job1_2_lv = st.selectbox("Lv ", list_job_lv, index=si('job1_2_lv', list_job_lv), key='job1_2_lv')
-
+    
     j3a, j3b = st.columns([3, 1])
-    with j3a: job2 = st.selectbox("二次職", job2_list, index=si('job2', job2_list), key='job2')
-    with j3b: job2_lv = st.selectbox("Lv  ", list_job2_lv, index=si('job2_lv', list_job2_lv), key='job2_lv')
+    with j3a: job1_3 = st.selectbox("一次職3", job1_list, index=si('job1_3', job1_list), key='job1_3')
+    with j3b: job1_3_lv = st.selectbox("Lv  ", list_job_lv, index=si('job1_3_lv', list_job_lv), key='job1_3_lv')
+
+    j4a, j4b = st.columns([3, 1])
+    with j4a: job1_4 = st.selectbox("一次職4", job1_list, index=si('job1_4', job1_list), key='job1_4')
+    with j4b: job1_4_lv = st.selectbox("Lv   ", list_job_lv, index=si('job1_4_lv', list_job_lv), key='job1_4_lv')
+
+    j5a, j5b = st.columns([3, 1])
+    with j5a: job2 = st.selectbox("二次職", job2_list, index=si('job2', job2_list), key='job2')
+    with j5b: job2_lv = st.selectbox("Lv  ", list_job2_lv, index=si('job2_lv', list_job2_lv), key='job2_lv')
 
     if origin == "ファンタジア":
         st.markdown("---")
@@ -1915,7 +2103,7 @@ with col_right:
         simple_keys = ['origin', 'level', 'age', 'gender', 'ethnicity', 'race', 'race_sub',
                        'blessing', 'past0', 'past1', 'past2', 'bg', 'bg_sub',
                        'attr', 'attr1', 'attr2', 'lineage',
-                       'job1_1', 'job1_1_lv', 'job1_2', 'job1_2_lv','job_craft2', 'job_craft2_lv',
+                       'job1_1', 'job1_1_lv', 'job1_2', 'job1_2_lv', 'job1_3', 'job1_3_lv', 'job1_4', 'job1_4_lv','job_craft2', 'job_craft2_lv',
                        'job2', 'job2_lv', 'skill', 'martial', 'craft',
                        'stance', 'stance_lv', 'school',
                        'spec_route', 'spec_1', 'spec_2', 'spec_3', 'spec_4'

@@ -160,7 +160,7 @@ def calculate():
     
     for a in current_attrs:
         if a == "炎属性":
-            attr_sys_texts.append("【炎属性】《燃焼》炎・水・夜光属性以外の敵に対して攻撃威力+10%(無属性にも有効)")
+            attr_sys_texts.append("【炎属性】《燃焼》炎・水・夜光属性以外の敵に対して攻撃威力+10%(無属性にも有効)/状態異常：凍傷を無効化する")
         elif a == "風属性":
             attr_sys_texts.append("【風属性】《拡散》風属性攻撃時、与ダメの20%を追加ダメージとして与える(風魔法扱い)\n《飄風》常時回避+5")
             mod_evasion += 5

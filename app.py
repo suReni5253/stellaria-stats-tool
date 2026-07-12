@@ -91,8 +91,9 @@ def calculate():
     mod_hp = 0
     mod_mp = 0
     mod_stamina = 0
-    mod_evasion = 0       # 👈 追加: 通常の回避補正（上限50）
+    mod_evasion = 0
     eva_limit_break = 0
+    mod_credit = 0
     bonus_sp = 0  # 👈 これが一番上にあれば UnboundLocalError は絶対に出ません
     base_sp = 0
     spent_sp = 0
@@ -108,6 +109,7 @@ def calculate():
     is_atoning_blood = False
     magic_sp_text = ""
     extra_buff_section = ""
+
     
     stats = {
         "筋力": 0, "知力": 0, "敏捷": 0, "精神": 0, 
@@ -203,17 +205,20 @@ def calculate():
                 add_stats_group(val)
                 bonus_sp += 400 if lineage == 100 else (350 if lineage >= 90 else (300 if lineage >= 71 else 250))
         elif race == "獣人族":
+                mod_credit -= 3
                 mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
                 stats["筋力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3), exclude=["筋力", "知力"])
                 stats["知力"] += 0 if lineage == 100 else (-5 if lineage >= 71 else -10)
         elif race == "翼人族":
+                mod_credit -= 3
                 mod_hp += 10 if lineage == 100 else (8 if lineage >= 71 else 5)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_stamina += 8 if lineage == 100 else (7 if lineage >= 71 else 6)
                 add_stats_group(10 if lineage == 100 else (7 if lineage >= 71 else 4))
         elif race == "鬼人族":
+                mod_credit -= 5
                 mod_hp += 30 if lineage == 100 else (25 if lineage >= 91 else (20 if lineage >= 71 else 15))
                 mod_mp += 12 if lineage == 100 else (8 if lineage >= 71 else 4)
                 mod_stamina += 6 if lineage == 100 else (4 if lineage >= 71 else 3)
@@ -221,6 +226,7 @@ def calculate():
                 stats["筋力"] += str_vit; stats["生命"] += str_vit
                 add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10), exclude=["筋力", "生命"])
         elif race == "兎人族":
+                mod_credit -= 3
                 mod_hp += 7 if lineage == 100 else (5 if lineage >= 71 else 3)
                 mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
                 add_stats_group(12 if lineage == 100 else (8 if lineage >= 71 else 4), exclude=["敏捷"])
@@ -228,6 +234,7 @@ def calculate():
                 eva_limit_break += 5 if lineage == 100 else (4 if lineage >= 91 else (3 if lineage >= 71 else 2))
                 stats["敏捷"] += agi_mer; stats["商才"] += agi_mer
         elif race == "呪い人":
+                mod_credit -= 3
                 if lineage >= 10:
                     mod_hp -= 15; mod_mp -= 15; mod_stamina -= 5; bonus_sp += 150
                     add_stats_group(-30)
@@ -258,6 +265,7 @@ def calculate():
                 if race_sub == "山の一族": mod_hp += 5
                 elif race_sub == "霧の一族": mod_mp += 5
         elif race == "猫人族":
+                mod_credit -= 3
                 val = 12 if lineage == 100 else (8 if lineage >= 71 else 4)
                 mod_hp += val; mod_mp += val
                 mod_stamina += 3 if lineage == 100 else (2 if lineage >= 71 else 1)
@@ -267,15 +275,17 @@ def calculate():
                 stats["商才"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 eva_limit_break += 2
                 bonus_sp += 150
-                if race_sub == "ベスティアケット": stats["容姿"] -= 5; mod_hp += 7
-                elif race_sub == "アニマケット": stats["容姿"] += 2; mod_mp += 2
+                if race_sub == "ベスティアケット": stats["容姿"] -= 5; mod_hp += 7; mod_credit -= 10
+                elif race_sub == "アニマケット": stats["容姿"] += 2; mod_mp += 2; mod_credit -= 2
         elif race == "妖怪":
+                mod_credit -= 3
                 mod_hp += 20 if lineage == 100 else (15 if lineage >= 71 else 10) 
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_stamina += 2
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5))
                 bonus_sp += 100
         elif race == "妖狐":
+                mod_credit -= 3
                 mod_hp += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_stamina += 3 if lineage == 100 else (2 if lineage >= 71 else 1)
@@ -291,6 +301,7 @@ def calculate():
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 8)
                 add_stats_group(12 if lineage == 100 else (8 if lineage >= 71 else 4), exclude=["知力", "容姿", "商才"])
         elif race == "不死者":
+                mod_credit -= 3
                 val = 5 if lineage == 100 else (4 if lineage >= 91 else (3 if lineage >= 71 else 2))
                 mod_hp += val; mod_mp += val; mod_stamina += 1
         elif race == "甲虫人":
@@ -311,6 +322,7 @@ def calculate():
                     mod_evasion += 5
                     add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5), exclude=["筋力", "生命"])
         elif race == "半獣人":
+                mod_credit -= 3
                 hp_mp = 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
@@ -318,6 +330,7 @@ def calculate():
                 add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3), exclude=["筋力"])
                 bonus_sp += 250 if lineage == 100 else (200 if lineage >= 71 else 150)
         elif race == "天狗":
+                mod_credit -= 3
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_stamina += -1 if lineage == 100 else (-2 if lineage >= 71 else -3)
@@ -325,6 +338,7 @@ def calculate():
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["知力"])
                 bonus_sp -= 100
         elif race == "鬼半妖":
+                mod_credit -= 3
                 mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_stamina += 2
@@ -332,6 +346,7 @@ def calculate():
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["筋力"])
                 bonus_sp += 300 if lineage == 100 else (250 if lineage >= 71 else 200)
         elif race == "蹄人族":
+                mod_credit -= 3
                 mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_mp += 5; mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
                 stats["敏捷"] += 18 if lineage == 100 else (14 if lineage >= 71 else 8)
@@ -339,6 +354,7 @@ def calculate():
                 stats["容姿"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3), exclude=["筋力", "敏捷", "容姿"])
         elif race == "マリオネット":
+                mod_credit -= 3
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_mp += 22 if lineage == 100 else (17 if lineage >= 71 else 12)
                 stats["敏捷"] += 10 if lineage == 100 else (7 if lineage >= 71 else 3)
@@ -390,6 +406,7 @@ def calculate():
                 stats["敏捷"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 for k in ["筋力", "精神", "生命", "容姿"]: stats[k] += 10 if lineage == 100 else (7 if lineage >= 71 else 4)
             elif race == "ヴァンパイア":
+                mod_credit -= 5
                 hp_mp = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 add_all = 25 if lineage == 100 else (20 if lineage >= 71 else 15)
@@ -397,6 +414,7 @@ def calculate():
                 stats["容姿"] += 30 if lineage == 100 else (25 if lineage >= 71 else 20)
                 ab_melee_str = "(格闘AB+1D)"
             elif race == "人狼":
+                mod_credit -= 5
                 mod_hp += 30 if lineage == 100 else (25 if lineage >= 71 else 20)
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
                 str_agi = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
@@ -420,6 +438,7 @@ def calculate():
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
                 add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3))
             elif race == "ゴブリン":
+                mod_credit -= 3
                 if lineage == 100:
                     mod_hp += 20; mod_mp += 10; stats["容姿"] -= 10
                     for k in ["筋力", "生命"]: stats[k] += 20
@@ -456,6 +475,7 @@ def calculate():
                 stats["容姿"] += 20 if lineage == 100 else (14 if lineage >= 71 else 8)
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["容姿"])
             elif race == "ホムンクルス":
+                mod_credit -= 3
                 mod_hp += 20 if lineage == 100 else 15
                 mod_mp += 20 if lineage == 100 else 15
                 mod_stamina += 3 if lineage == 100 else 2
@@ -469,6 +489,7 @@ def calculate():
                 stats["筋力"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5), exclude=["知力", "筋力", "体格"])
             elif race == "蛇人":
+                mod_credit -= 3
                 if gender == "女":
                     mod_hp += 5; mod_mp += 20 if lineage == 100 else (15 if lineage >= 71 else 10); mod_stamina += 1
                     stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
@@ -481,12 +502,14 @@ def calculate():
                     add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3), exclude=["生命", "敏捷"])
                 if lineage == 1: mod_mp += 15
             elif race == "幻蛛族":
+                mod_credit -= 3
                 mod_hp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_mp += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 mod_stamina += 2
                 add_stats_group(15 if lineage == 100 else (10 if lineage >= 71 else 5))
                 stats["芸術"] += 7 if lineage == 100 else (5 if lineage >= 71 else 3)
             elif race == "失耀天使":
+                mod_credit -= 3
                 mod_hp += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_stamina += 3 if lineage == 100 else (2 if lineage >= 71 else 1)
@@ -507,6 +530,7 @@ def calculate():
                     mod_mp += 10
                     ab_magic_extra = " (+1D)"
             elif race == "ウーンゲフォイヤー":
+                mod_credit -= 5
                 hp_mp = 30 if lineage == 100 else (25 if lineage >= 71 else 20)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
@@ -520,16 +544,19 @@ def calculate():
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
                 for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
             elif race == "マンティコアF":
+                mod_credit -= 5
                 mod_hp += 35 if lineage == 100 else (25 if lineage >= 71 else 15)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 eva_limit_break += 5
                 add_stats_group(15)
             elif race == "クラーケンF":
+                mod_credit -= 5
                 mod_hp += 35 if lineage == 100 else (30 if lineage >= 71 else 25)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_stamina += 5 if lineage == 100 else (4 if lineage >= 71 else 3)
                 add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
             elif race == "メルフェディオヌF":
+                mod_credit -= 5
                 hp_mp = 40 if lineage == 100 else (35 if lineage >= 71 else 30)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
@@ -605,6 +632,7 @@ def calculate():
                 stats["筋力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 add_stats_group(5, exclude=["筋力"])
             elif race == "ノクト・ヴァンパイア":
+                mod_credit -= 5
                 hp_mp = 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 add_stats_group(20 if lineage == 100 else (15 if lineage >= 71 else 10))
@@ -643,6 +671,7 @@ def calculate():
                 add_stats_group(17 if lineage == 100 else (12 if lineage >= 71 else 7), exclude=["精神"])
                 stats["精神"] -= 5 if lineage == 100 else (10 if lineage >= 71 else 15)
             elif race == "羅刹":
+                mod_credit -= 3
                 mod_hp += 6 if lineage == 100 else (4 if lineage >= 71 else 2)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 mod_stamina += 1
@@ -659,6 +688,7 @@ def calculate():
                 for k in ["筋力", "知力", "敏捷", "精神", "体格", "生命"]: stats[k] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
             elif race == "アルラウネ":
+                mod_credit -= 3
                 mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 stats["容姿"] += 17 if lineage == 100 else (12 if lineage >= 71 else 7)
@@ -669,14 +699,17 @@ def calculate():
                 mod_mp += 11 if lineage == 100 else (8 if lineage >= 71 else 5)
                 add_stats_group(11 if lineage == 100 else (8 if lineage >= 71 else 5))
             elif race == "スチームブッチャー":
+                mod_credit -= 3
                 mod_hp += 25; mod_mp += 10; mod_stamina -= 2
                 add_stats_group(8, exclude=["筋力"])
                 stats["筋力"] += 30
             elif race == "怪異憑依者／怪人":
+                mod_credit -= 3
                 val = 15 if lineage == 1 else (13 if lineage == 100 else (8 if lineage >= 71 else 3))
                 mod_hp += val; mod_mp += val
                 add_stats_group(val)
             elif race == "マンティコアN":
+                mod_credit -= 5
                 mod_hp += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 mod_mp += 7 if lineage == 100 else (5 if lineage >= 71 else 2)
                 eva_limit_break += 2
@@ -687,6 +720,7 @@ def calculate():
                 mod_stamina += 2 if lineage == 100 else (2 if lineage >= 71 else 1)
                 add_stats_group(10 if lineage == 100 else (7 if lineage >= 71 else 5))
             elif race == "メルフェディオヌN":
+                mod_credit -= 5
                 hp_mp = 20 if lineage == 100 else (17 if lineage >= 71 else 15)
                 mod_hp += hp_mp; mod_mp += hp_mp
                 mod_stamina += 2 if lineage == 100 else (1 if lineage >= 71 else 1)
@@ -740,6 +774,22 @@ def calculate():
     lineage = p['lineage']
     if p['past0'] == "⑥血統": lineage += 2
     if p['past1'] == "④禁断": lineage += 2
+    
+    base_credit = 0
+    if lineage == 1:
+        base_credit = 5
+    elif 2 <= lineage <= 30:
+        base_credit = 10
+    elif 31 <= lineage <= 60:
+        base_credit = 20
+    elif  61<= lineage <= 70:
+        base_credit = 40; stats["商才"] += 10
+    elif 71 <= lineage <= 89:
+        base_credit = 50
+    elif 90 <= lineage <= 99:
+        base_credit = 60
+    elif lineage == 100:
+        base_credit = 70
 
     past0, past1, past2 = p['past0'], p['past1'], p['past2']
     if past0 == "➁生存": stats["生命"] += 3; mod_hp += 5
@@ -1615,12 +1665,14 @@ def calculate():
     val_extra_mp = p.get('extra_mp', 0)
     val_extra_stamina = p.get('extra_stamina', 0)
     val_extra_evasion = p.get('extra_evasion', 0)
+    val_extra_credit = p.get('extra_credit', 0)
     val_extra_text = p.get('extra_text', "")
 
     mod_hp += val_extra_hp
     mod_mp += val_extra_mp
     mod_stamina += val_extra_stamina
     mod_evasion += val_extra_evasion
+    mod_credit += val_extra_credit
 
     # === アビリティによるステータス加算 ===
     val_skill = p.get('skill', '(なし)')
@@ -1683,6 +1735,7 @@ def calculate():
         final_hp = int(final_hp * 0.7)
     shield_hp_str = ""
     final_stamina = (stats["敏捷"] + stats["生命"]) // 10 + mod_stamina
+    final_credit = base_credit + mod_credit
     if is_blessing_active:
         if blessing_str == "雪神の加護":
             shield_hp_str = f" (＋庇護HP: {int(final_hp * 0.3)})"
@@ -1774,6 +1827,7 @@ MP: {final_mp}
 精神限界: {final_mental}
 魅力: {stats['容姿']}
 知識: {stats['知力']}
+信用: {final_credit}
 
 基礎技能P合計: {base_sp + bonus_sp} (基本:{base_sp} ＋ ボーナス:{bonus_sp}){magic_sp_text}
 
@@ -2062,15 +2116,16 @@ with col_center:
     st.markdown("### 🏠 クラン・エシュロン・その他バフ（手入力）")
     st.caption("※クランハウスの家具効果、ハウジングなどのPLや所属によって変動するバフはこちらに入力してください。")
 
-    col_ex1, col_ex2 = st.columns(2)
+    col_ex1, col_ex2, col_ex3 = st.columns(3)
     with col_ex1:
         st.number_input("追加HP", value=st.session_state.get('extra_hp', 0), step=1, key='extra_hp')
         st.number_input("追加スタミナ", value=st.session_state.get('extra_stamina', 0), step=1, key='extra_stamina')
     with col_ex2:
         st.number_input("追加MP", value=st.session_state.get('extra_mp', 0), step=1, key='extra_mp')
         st.number_input("追加回避（通常）", value=st.session_state.get('extra_evasion', 0), step=1, key='extra_evasion')
+        st.number_input("追加商才", value=st.session_state.get('extra_credit', 0), step=1, key='extra_credit')
 
-    st.text_input("その他追加能力・テキスト", value=st.session_state.get('extra_text', ""), key='extra_text', placeholder="例:クランハウス内でのみ料理技能+30")
+    st.text_input("その他追加 能力・テキスト", value=st.session_state.get('extra_text', ""), key='extra_text', placeholder="例:クランハウス内でのみ料理技能+30")
 
     st.markdown("---")
     calc_btn = st.button("🎲 ステータスを計算する", use_container_width=True, type="primary")
@@ -2121,7 +2176,7 @@ with col_right:
                        'stance', 'stance_lv', 'school',
                        'spec_route', 'spec_1', 'spec_2', 'spec_3', 'spec_4'
                        'is_lady_contracted', 'is_partnered', 'is_servant_mastered', 'is_steward', 'other_bond',
-                       'extra_hp', 'extra_mp', 'extra_stamina', 'extra_evasion', 'extra_text',
+                       'extra_hp', 'extra_mp', 'extra_stamina', 'extra_evasion', 'extra_text', 'extra_credit',
                        'job_craft1_1', 'job_craft1_1_lv', 'job_craft1_2', 'job_craft1_2_lv', 'job_craft2', 'job_craft2_lv']
         for k in simple_keys:
             if k in st.session_state:

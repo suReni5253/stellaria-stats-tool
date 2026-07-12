@@ -2123,7 +2123,7 @@ with col_center:
     with col_ex2:
         st.number_input("追加MP", value=st.session_state.get('extra_mp', 0), step=1, key='extra_mp')
         st.number_input("追加回避（通常）", value=st.session_state.get('extra_evasion', 0), step=1, key='extra_evasion')
-        st.number_input("追加商才", value=st.session_state.get('extra_credit', 0), step=1, key='extra_credit')
+        st.number_input("追加信用", value=st.session_state.get('extra_credit', 0), step=1, key='extra_credit')
 
     st.text_input("その他追加 能力・テキスト", value=st.session_state.get('extra_text', ""), key='extra_text', placeholder="例:クランハウス内でのみ料理技能+30")
 

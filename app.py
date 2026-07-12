@@ -834,7 +834,7 @@ def calculate():
         elif bg == "淑女":
             if gender != "女": warning_errors.append("⚠️【淑女】性別「女」専用です")
             if p.get('is_lady_contracted', False):
-                bonus_sp += 100; stats["容姿"] += 6; mod_hp += 10; mod_mp += 10; mod_stamina += 2
+                bonus_sp += 100; stats["容姿"] += 6; mod_hp += 10; mod_mp += 10; mod_stamina += 2; mod_credit += 5
                 warning_errors.append(f"💡【淑女】相手(男性)との家柄差は±5以内の必要があります(自身の家柄:{lineage})。")
             else:
                 warning_errors.append("💡【淑女】男性と契約を行うまで、技能Pなどの恩恵は適用されません。")
@@ -848,7 +848,7 @@ def calculate():
             if p.get('is_steward', False): mod_hp += 5
         elif bg == "多重人格者": mod_mp += 5; bonus_sp += 30
         elif bg == "対偶者": 
-            bonus_sp += 35; stats["容姿"] += 2
+            bonus_sp += 35; stats["容姿"] += 2; mod_credit += 2
         elif bg == "海賊": mod_hp += 5; mod_stamina += 1; bonus_sp += 30
         elif bg == "祈祷者": mod_mp += 10
         elif bg == "蛮族": mod_hp += 5; bonus_sp += 20
@@ -858,7 +858,7 @@ def calculate():
                 for key in base_stats_names: stats[key] -= 10
             else: warning_errors.append("【贖血徒】魔族専用の出自です")
         elif bg == "迷い人":
-            mod_hp +=2; mod_mp += 2; mod_stamina += 1; bonus_sp += 50
+            mod_hp +=2; mod_mp += 2; mod_stamina += 1; bonus_sp += 50; mod_credit -= 5
                 
             
     elif origin == "ノクターン":
@@ -889,12 +889,12 @@ def calculate():
                 bonus_sp += 120; mod_hp += 5
                 if p.get('is_servant_mastered', False): mod_hp += 5
                 if p.get('is_steward', False): mod_hp += 5
-        elif bg == "官吏": bonus_sp += 150; stats["精神"] += 6
+        elif bg == "官吏": bonus_sp += 150; stats["精神"] += 6; mod_credit += 10
         elif bg == "医者": bonus_sp += 70; stats["知力"] += 6; mod_hp += 3; mod_mp += 5
         elif bg == "淑女":
             if gender != "女": warning_errors.append("⚠️【淑女】性別「女」専用です")
             if p.get('is_lady_contracted', False):
-                bonus_sp += 150; stats["容姿"] += 6; mod_hp += 10; mod_mp += 10; mod_stamina += 2
+                bonus_sp += 150; stats["容姿"] += 6; mod_hp += 10; mod_mp += 10; mod_stamina += 2; mod_credit += 5
                 warning_errors.append(f"💡【淑女】相手(男性)との家柄差は±5以内の必要があります(自身の家柄:{lineage})。")
             else:
                 warning_errors.append("💡【淑女】男性と契約を行うまで、技能Pなどの恩恵は適用されません。")
@@ -906,12 +906,12 @@ def calculate():
             if bg_sub == "ギャング": bonus_sp += 50; mod_hp += 5; stats["筋力"] += 5
             elif bg_sub == "マフィア": bonus_sp += 70; bonus_ab_melee += 3; mod_mp += 5; stats["筋力"] += 2
         elif bg == "対偶者": 
-            bonus_sp += 35; stats["容姿"] += 2
+            bonus_sp += 35; stats["容姿"] += 2; mod_credit += 2
         elif bg == "教授": bonus_sp += 180; mod_mp += 5; mod_hp += 5
         elif bg == "ペテン師": mod_hp += 5; mod_mp += 5; stats["知力"] += 3; bonus_sp += 60
         elif bg == "怪盗": mod_mp += 10; bonus_sp += 100
         elif bg == "水兵": mod_hp += 5; mod_mp += 5; bonus_sp += 120; warning_errors.append("💡【水兵】指定ステータスに+4手動で割り振ってください。")
-        elif bg == "僭称者": bonus_sp += 200; warning_errors.append("💡【僭称者】家柄を+1d10して手動で修正してください。")
+        elif bg == "僭称者": bonus_sp += 200; mod_credit -= 5; warning_errors.append("💡【僭称者】家柄を+1d10して手動で修正してください。")
         elif bg == "叫喚者": pass
         elif bg == "拳闘士": pass
         elif bg == "囚憶者": mod_mp += 5

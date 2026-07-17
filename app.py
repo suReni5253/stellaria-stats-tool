@@ -1341,40 +1341,40 @@ def calculate():
         if school != "(なし)":
             elf_races = ["ハイエルフ", "ダークエルフ", "ウッドエルフ", "スノウエルフ", "フレイムエルフ"]
             if school == "ミドガルネ帝国魔導学園":
-                mod_hp -= 15; fan_sys_texts.append(f"【{school}】元素魔術の消費MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時の消費MP-10%】不利効果【被ダメージ+10%】")
             elif school == "ユーグランス天空魔術学園":
-                mod_mp -= 10; fan_sys_texts.append(f"【{school}】元素魔術使用時、威力+10%")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、威力+20%】不利効果【消費魔力+10%】")
             elif school == "方術院":
-                mod_hp -= 5; mod_mp -= 5; fan_sys_texts.append(f"【{school}】元素AB+1D / 元素MP-5%")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+1D/元素魔術使用時の消費MP-5%】不利効果【被ダメージ+20%】")
             elif school == "シャルディア中央魔導城":
-                mod_mp -= 15; fan_sys_texts.append(f"【{school}】元素魔術使用時、魔導学AB+2D")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+2D】不利効果【消費魔力+20%】")
             elif school == "イリコフォティア大魔導学院":
-                mod_hp -= 15; fan_sys_texts.append(f"【{school}】魔力魔術使用時の消費MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+2D】不利効果【消費魔力+20%】")
             elif school == "陰陽学所":
-                mod_mp -= 10; fan_sys_texts.append(f"【{school}】魔力魔術使用時、威力+10%")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、威力+20%】不利効果【消費魔力+10%】")
             elif school == "アンブローズ王立魔法学校":
-                mod_hp -= 5; mod_mp -= 5; fan_sys_texts.append(f"【{school}】魔力AB+1D / 魔力MP-5%")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+1D/魔力MP-5%】不利効果【被ダメージ+20%】")
             elif school == "ロクス魔導騎士学院":
-                mod_mp -= 15; fan_sys_texts.append(f"【{school}】魔力魔術使用時、魔導学AB+2D")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、消費MP-10%】不利効果【被ダメージ+10%】")
             elif school == "元素教会神秘学舎":
-                mod_hp -= 15; fan_sys_texts.append(f"【{school}】回復系神秘術＆回復魔法の消費MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【回復系神秘術＆回復魔法の消費MP-10%】不利効果【与ダメージ-20%】")
                 if actual_attr != "光属性": warning_errors.append(f"⚠️【流派エラー】{school}は光属性専用です。")
             elif school == "神聖魔術学園":
-                mod_hp -= 15; fan_sys_texts.append(f"【{school}】攻撃系神秘術の消費MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【攻撃系神秘術の消費MP-10%】不利効果【与ダメージ-10%】")
                 if actual_attr != "光属性": warning_errors.append(f"⚠️【流派エラー】{school}は光属性専用です。")
             elif school == "白亜の魔導塔":
-                mod_hp -= 20; mod_mp -= 20; fan_sys_texts.append(f"【{school}】元素AB+2D / 元素MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+2D/元素魔術使用時の消費MP-10%】不利効果【被ダメージ+20%/回避基準値+10】")
                 if race not in elf_races: warning_errors.append(f"⚠️【流派エラー】{school}はエルフ専用（ハーフ不可）です。")
             elif school == "冒険者ギルド元素魔導教練所":
-                fan_sys_texts.append(f"【{school}】元素魔術使用時の消費MP-5%")
+                fan_sys_texts.append(f"【{school}】【元素魔術使用時の消費MP-5%】")
             elif school == "星見の魔導空船":
-                mod_hp -= 20; mod_mp -= 20; fan_sys_texts.append(f"【{school}】魔力AB+2D / 魔力MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+2D/魔力MP-10%】不利効果【被ダメージ+20%/回避基準値+10】")
             elif school == "冒険者ギルド魔力魔導教練所":
-                fan_sys_texts.append(f"【{school}】魔力魔術使用時の消費MP-5%")
+                fan_sys_texts.append(f"【{school}】【魔力魔術使用時の消費MP-5%】")
             elif school == "大修道院治癒術伝習所":
-                fan_sys_texts.append(f"【{school}】回復系神秘術＆回復魔法の消費MP-5%")
+                fan_sys_texts.append(f"【{school}】【回復系神秘術＆回復魔法の消費MP-5%】")
             elif school == "アスガリア治癒学校":
-                mod_hp -= 15; fan_sys_texts.append(f"【{school}】回復魔法＆支援魔法の消費MP-10%")
+                fan_sys_texts.append(f"【{school}】有利効果【回復魔法＆支援魔法の消費MP-10%】不利効果【与ダメージ-20%】")
 
     # --- ノクターン限定システム ---
     noc_sys_texts = []

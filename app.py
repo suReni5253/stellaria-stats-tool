@@ -1345,7 +1345,7 @@ def calculate():
             elif school == "ユーグランス天空魔術学園":
                 fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、威力+20%】不利効果【消費魔力+10%】")
             elif school == "方術院":
-                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+1D/元素魔術使用時の消費MP-5%】不利効果【被ダメージ+20%】")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+1D/元素魔術使用時の消費MP-5%】不利効果【被ダメージ+10%】")
             elif school == "シャルディア中央魔導城":
                 fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+2D】不利効果【消費魔力+20%】")
             elif school == "イリコフォティア大魔導学院":
@@ -1353,7 +1353,7 @@ def calculate():
             elif school == "陰陽学所":
                 fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、威力+20%】不利効果【消費魔力+10%】")
             elif school == "アンブローズ王立魔法学校":
-                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+1D/魔力MP-5%】不利効果【被ダメージ+20%】")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+1D/魔力MP-5%】不利効果【被ダメージ+10%】")
             elif school == "ロクス魔導騎士学院":
                 fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、消費MP-10%】不利効果【被ダメージ+10%】")
             elif school == "元素教会神秘学舎":
@@ -1363,12 +1363,12 @@ def calculate():
                 fan_sys_texts.append(f"【{school}】有利効果【攻撃系神秘術の消費MP-10%】不利効果【与ダメージ-10%】")
                 if actual_attr != "光属性": warning_errors.append(f"⚠️【流派エラー】{school}は光属性専用です。")
             elif school == "白亜の魔導塔":
-                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+2D/元素魔術使用時の消費MP-10%】不利効果【被ダメージ+20%/回避基準値+10】")
+                fan_sys_texts.append(f"【{school}】有利効果【元素魔術使用時、魔導学AB+2D/元素魔術使用時の消費MP-10%】不利効果【被ダメージ+20%】")
                 if race not in elf_races: warning_errors.append(f"⚠️【流派エラー】{school}はエルフ専用（ハーフ不可）です。")
             elif school == "冒険者ギルド元素魔導教練所":
                 fan_sys_texts.append(f"【{school}】【元素魔術使用時の消費MP-5%】")
             elif school == "星見の魔導空船":
-                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+2D/魔力MP-10%】不利効果【被ダメージ+20%/回避基準値+10】")
+                fan_sys_texts.append(f"【{school}】有利効果【魔力魔術使用時、魔導学AB+2D/魔力MP-10%】不利効果【被ダメージ+20%】")
             elif school == "冒険者ギルド魔力魔導教練所":
                 fan_sys_texts.append(f"【{school}】【魔力魔術使用時の消費MP-5%】")
             elif school == "大修道院治癒術伝習所":

@@ -1044,7 +1044,7 @@ def calculate():
             
             if job2 == "騎士":
                 check_job_req("旅騎士", "修練者"); mod_hp += 15
-                job_texts.append("騎士Lv0: HP+15/全防御力+25】")
+                job_texts.append("騎士Lv0: HP+15/全防御力+25")
                 if job2_lv >= 1: job_texts.append("騎士Lv1: 職業戦技『銀剣』【1ターンの間自身が敵に与える片手剣/両手剣ダメージ+30%/クールタイム3ターン〈戦技ターン終了時からカウント〉/ナイツオブアラウンドと併用不可】")
                 if job2_lv >= 2: mod_hp += 5; job_texts.append("騎士Lv2: 銀剣の効果ターンが1ターン増加/HP+5/全防御力+25")
                 if job2_lv >= 3: job_texts.append("騎士Lv3: 職業戦技『ナイツオブアラウンド』【1ターンの間敵からのダメージに累減20%/発動中は攻撃不可能/クールタイム4ターン〈戦技ターン終了時からカウント〉】")
@@ -1149,9 +1149,9 @@ def calculate():
                 
             elif job2 == "剣闘士":
                 check_job_req("戦士", "軽槍兵")
-                mod_hp += 5
+                job_texts.append("剣闘士Lv0: HP+5"); mod_hp += 5
                 if job2_lv >= 1: job_texts.append("剣闘士Lv1: 戦闘本能【1ターン回避-20&被ダメ+50%の代わり物理+70%(CT3)】")
-                if job2_lv >= 2: mod_hp += 10
+                if job2_lv >= 2: job_texts.append("剣闘士Lv2: HP+10"); mod_hp += 10
                 if job2_lv >= 3: job_texts.append("剣闘士Lv3: 開戦鼓舞【味方全体(最大4名)のHP・ST10%回復(CT3)】")
                 if job2_lv >= 4: job_texts.append("剣闘士Lv4: 開戦鼓舞強化【HP・ST回復量20%に上昇】")
                 
@@ -1190,50 +1190,50 @@ def calculate():
         def apply_job_passive_noc(job_name, lv):
             nonlocal mod_mp, mod_hp, mod_stamina, bonus_mental, mod_evasion
             if job_name == "下士官":
-                if lv >= 1: mod_hp += 2
-                if lv >= 2: mod_mp += 2
-                if lv >= 3: job_texts.append("戦技『規律』(与ダメ+10%/CT3)")
+                if lv >= 1: job_texts.append("下士官Lv1: HP+2"); mod_hp += 2
+                if lv >= 2: job_texts.append("下士官Lv2: MP+2"); mod_mp += 2
+                if lv >= 3: job_texts.append("下士官Lv3: 戦技『規律』(与ダメ+10%/CT3)")
             elif job_name == "傭兵":
-                if lv >= 1: mod_hp += 2
-                if lv >= 2: mod_hp += 2
-                if lv >= 3: job_texts.append("戦技『突撃』(被ダメ-10%/CT3)")
+                if lv >= 1: job_texts.append("傭兵Lv1: HP+2"); mod_hp += 2
+                if lv >= 2: job_texts.append("傭兵Lv2: HP+2"); mod_hp += 2
+                if lv >= 3: job_texts.append("傭兵Lv3: 戦技『突撃』(被ダメ-10%/CT3)")
             elif job_name == "斥候":
-                if lv >= 1: job_texts.append("戦技『斥候射撃』(狙撃銃威力+20%/MP-20/CT1)")
-                if lv >= 2: mod_mp += 3
-                if lv >= 3: job_texts.append("戦技『斥候射撃(強)』(狙撃銃威力+30%/MP-30/CT1)")
+                if lv >= 1: job_texts.append("斥候Lv1: 戦技『斥候射撃』(狙撃銃威力+20%/MP-20/CT1)")
+                if lv >= 2: job_texts.append("斥候Lv2: MP+3"); mod_mp += 3
+                if lv >= 3: job_texts.append("斥候Lv3: 戦技『斥候射撃(強)』(狙撃銃威力+30%/MP-30/CT1)")
             elif job_name == "襲撃者":
-                if lv >= 1: mod_hp += 2
-                if lv >= 2: job_texts.append("回避+2"); mod_evasion += 2
-                if lv >= 3: job_texts.append("戦技『襲撃』(命中-20, 与ダメ+20%/CT3)")
+                if lv >= 1: job_texts.append("襲撃者Lv1: HP+2"); mod_hp += 2
+                if lv >= 2: job_texts.append("襲撃者Lv2: 回避+2"); mod_evasion += 2
+                if lv >= 3: job_texts.append("襲撃者Lv3: 戦技『襲撃』(命中-20, 与ダメ+20%/CT3)")
             elif job_name == "強奪者":
-                if lv >= 1: mod_stamina += 2
-                if lv >= 2: job_texts.append("回避+2"); mod_evasion += 2
-                if lv >= 3: job_texts.append("戦技『強奪』(ダメ30%ドレイン/CT3)")
+                if lv >= 1: job_texts.append("強奪者Lv1: スタミナ+2"); mod_stamina += 2
+                if lv >= 2: job_texts.append("強奪者Lv2: 回避+2"); mod_evasion += 2
+                if lv >= 3: job_texts.append("強奪者Lv3: 戦技『強奪』(ダメ30%ドレイン/CT3)")
             elif job_name == "旅芸人":
-                if lv >= 1: job_texts.append("戦技『曲芸』(敵回避基準+5/CT3)")
-                if lv >= 2: mod_mp += 5; job_texts.append("『曲芸』強化(継続2T/CT2)")
-                if lv >= 3: job_texts.append("特性『不測の芸当』(曲芸中ナイフ投擲+30%)")
+                if lv >= 1: job_texts.append("旅芸人Lv1: 戦技『曲芸』(敵回避基準+5/CT3)")
+                if lv >= 2: mod_mp += 5; job_texts.append("旅芸人Lv2: 『曲芸』強化(継続2T/CT2)")
+                if lv >= 3: job_texts.append("旅芸人Lv3: 特性『不測の芸当』(曲芸中ナイフ投擲+30%)")
             elif job_name == "手品師":
-                if lv >= 1: job_texts.append("戦技『ミスディレクション』(魔法威力+25%/CT2)")
-                if lv >= 2: mod_mp += 10
-                if lv >= 3: job_texts.append("戦技『シャッフル・ルーレット』(HPダメ or 回復)")
+                if lv >= 1: job_texts.append("手品師Lv1: 戦技『ミスディレクション』(魔法威力+25%/CT2)")
+                if lv >= 2: mod_mp += 10; job_texts.append("手品師Lv2: 戦技『ミスディレクション』強化(魔法威力+10%/CT2)")
+                if lv >= 3: job_texts.append("手品師Lv3: 戦技『シャッフル・ルーレット』(HPダメ or 回復)")
             elif job_name == "早撃手":
-                if lv >= 1: mod_mp += 3
-                if lv >= 2: mod_mp += 3
-                if lv >= 3: job_texts.append("戦技『早撃ち』(リボルバー2発発射)")
+                if lv >= 1: job_texts.append("早撃手Lv1: MP+3"); mod_mp += 3
+                if lv >= 2: job_texts.append("早撃手Lv2: MP+3"); mod_mp += 3
+                if lv >= 3: job_texts.append("早撃手Lv3: 戦技『早撃ち』(リボルバー2発発射)")
             elif job_name == "労働者":
-                if lv >= 1: job_texts.append("戦技『労働精神』(敵ダメ累減-10%/CT3)")
-                if lv >= 2: bonus_mental += 1
-                if lv >= 3: bonus_mental += 1
+                if lv >= 1: job_texts.append("労働者Lv1: 戦技『労働精神』(敵ダメ累減-10%/CT3)")
+                if lv >= 2: job_texts.append("労働者Lv2: 精神限界+1"); bonus_mental += 1
+                if lv >= 3: job_texts.append("労働者Lv3: 精神限界+1"); bonus_mental += 1
             elif job_name == "歩兵":
-                if lv >= 1: job_texts.append("戦技『小銃射撃』(小銃威力+5%)")
-                if lv >= 2: mod_hp += 2
-                if lv >= 3: mod_mp += 2
+                if lv >= 1: job_texts.append("歩兵Lv1: 戦技『小銃射撃』(小銃威力+5%)")
+                if lv >= 2: job_texts.append("歩兵Lv2: HP+2"); mod_hp += 2
+                if lv >= 3: job_texts.append("歩兵Lv3: MP+2"); mod_mp += 2
             elif job_name == "格闘兵":
-                if lv >= 0: job_texts.append("戦技『強襲格闘』(近接+10%, 接近+5, 回避-10)"); mod_evasion -= 10
-                if lv >= 1: job_texts.append("『強襲格闘』強化(近接+20%)")
-                if lv >= 2: job_texts.append("戦技『アサルトインファイト』(連撃反動-8)")
-                if lv >= 3: job_texts.append("『アサルトインファイト』強化(連撃反動-5)")
+                if lv >= 0: job_texts.append("格闘兵Lv0: 戦技『強襲格闘』(近接+10%, 接近+5, 回避-10)"); mod_evasion -= 10
+                if lv >= 1: job_texts.append("格闘兵Lv1: 『強襲格闘』強化(近接+20%)")
+                if lv >= 2: job_texts.append("格闘兵Lv2: 戦技『アサルトインファイト』(連撃反動-8)")
+                if lv >= 3: job_texts.append("格闘兵Lv3: 『アサルトインファイト』強化(連撃反動-5)")
 
         if job1_1 != "(なし)": apply_job_passive_noc(job1_1, job1_1_lv)
         if job1_2 != "(なし)": apply_job_passive_noc(job1_2, job1_2_lv)
@@ -1247,60 +1247,60 @@ def calculate():
                 elif not req2 and not has_req1: warning_errors.append(f"【二次職条件未達】{job2}の条件({req1}Lv3)を満たしていません。")
             if job2 == "特技士官":
                 check_job_req_noc("下士官")
-                if job2_lv >= 1: mod_hp += 5
-                if job2_lv >= 2: mod_mp += 5
-                if job2_lv >= 3: job_texts.append("戦技『特殊作戦』(与ダメ+30%/CT3)")
-                if job2_lv >= 4: mod_hp += 5; mod_mp += 5
+                if job2_lv >= 1: job_texts.append("特技士官Lv1: HP+5"); mod_hp += 5
+                if job2_lv >= 2: job_texts.append("特技士官Lv2: MP+5"); mod_mp += 5
+                if job2_lv >= 3: job_texts.append("特技士官Lv3: 戦技『特殊作戦』(与ダメ+30%/CT3)")
+                if job2_lv >= 4: job_texts.append("特技士官Lv4: HP+5, MP+5"); mod_hp += 5; mod_mp += 5
             elif job2 == "突撃傭兵":
                 check_job_req_noc("傭兵")
-                if job2_lv >= 1: mod_hp += 3
-                if job2_lv >= 2: mod_hp += 3
-                if job2_lv >= 3: job_texts.append("戦技『散兵突撃』(被ダメ-20%/CT3)")
-                if job2_lv >= 4: job_texts.append("『散兵突撃』強化(攻撃威力+10%)")
+                if job2_lv >= 1: job_texts.append("突撃傭兵Lv1: HP+3"); mod_hp += 3
+                if job2_lv >= 2: job_texts.append("突撃傭兵Lv2: HP+3"); mod_hp += 3
+                if job2_lv >= 3: job_texts.append("突撃傭兵Lv3: 戦技『散兵突撃』(被ダメ-20%/CT3)")
+                if job2_lv >= 4: job_texts.append("突撃傭兵Lv4: 『散兵突撃』強化(攻撃威力+10%)")
             elif job2 == "狙撃手":
                 check_job_req_noc("斥候")
-                if job2_lv >= 1: job_texts.append("戦技『急所狙撃』(狙撃銃威力+1D, 狙撃威力+15%/MP-25)")
-                if job2_lv >= 2: job_texts.append("狙撃銃威力+10%")
-                if job2_lv >= 3: job_texts.append("『急所狙撃』強化(狙撃銃威力+2D)")
-                if job2_lv >= 4: job_texts.append("狙撃銃威力+20%")
+                if job2_lv >= 1: job_texts.append("狙撃手Lv1: 戦技『急所狙撃』(狙撃銃威力+1D, 狙撃威力+15%/MP-25)")
+                if job2_lv >= 2: job_texts.append("狙撃手Lv2: 狙撃銃威力+10%")
+                if job2_lv >= 3: job_texts.append("狙撃手Lv3: 『急所狙撃』強化(狙撃銃威力+2D)")
+                if job2_lv >= 4: job_texts.append("狙撃手Lv4: 狙撃銃威力+20%")
             elif job2 == "略奪者":
                 check_job_req_noc("襲撃者")
-                if job2_lv >= 1: mod_hp += 3
-                if job2_lv >= 2: job_texts.append("回避+3"); mod_evasion += 3
-                if job2_lv >= 3: job_texts.append("戦技『略奪』(ダメ半分ドレイン/CT6)")
-                if job2_lv >= 4: mod_hp += 5
+                if job2_lv >= 1: job_texts.append("略奪者Lv1: HP+3"); mod_hp += 3
+                if job2_lv >= 2: job_texts.append("略奪者Lv2: 回避+3"); mod_evasion += 3
+                if job2_lv >= 3: job_texts.append("略奪者Lv3: 戦技『略奪』(ダメ半分ドレイン/CT6)")
+                if job2_lv >= 4: job_texts.append("略奪者Lv4: HP+5"); mod_hp += 5
             elif job2 == "強襲兵":
                 check_job_req_noc("歩兵")
-                if job2_lv >= 1: mod_mp += 3
-                if job2_lv >= 2: job_texts.append("回避+2"); mod_evasion += 2
-                if job2_lv >= 3: job_texts.append("戦技『強襲』(HP-50%,MP-30/与ダメ+50%,命中+20,被ダメ+100%/CT10)")
-                if job2_lv >= 4: mod_hp += 3
+                if job2_lv >= 1: job_texts.append("強襲兵Lv1: MP+3"); mod_mp += 3
+                if job2_lv >= 2: job_texts.append("強襲兵Lv2: 回避+2"); mod_evasion += 2
+                if job2_lv >= 3: job_texts.append("強襲兵Lv3: 戦技『強襲』(HP-50%,MP-30/与ダメ+50%,命中+20,被ダメ+100%/CT10)")
+                if job2_lv >= 4: job_texts.append("強襲兵Lv4: HP+3"); mod_hp += 3
             elif job2 == "喜劇役者":
                 check_job_req_noc("旅芸人")
-                if job2_lv >= 1: job_texts.append("戦技『笑劇』(敵回避基準+10/CT6)")
-                if job2_lv >= 2: job_texts.append("戦技『喜劇』(HP&MP20%回復/CT6)")
-                if job2_lv >= 3: job_texts.append("『笑劇』強化(CT3)")
-                if job2_lv >= 4: job_texts.append("『喜劇』強化(回復量40%)")
+                if job2_lv >= 1: job_texts.append("喜劇役者Lv1: 戦技『笑劇』(敵回避基準+10/CT6)")
+                if job2_lv >= 2: job_texts.append("喜劇役者Lv2: 戦技『喜劇』(HP&MP20%回復/CT6)")
+                if job2_lv >= 3: job_texts.append("喜劇役者Lv3: 『笑劇』強化(CT3)")
+                if job2_lv >= 4: job_texts.append("喜劇役者Lv4: 『喜劇』強化(回復量40%)")
             elif job2 == "奇術師":
                 check_job_req_noc("手品師", "旅芸人")
-                if job2_lv >= 0: mod_mp += 10; job_texts.append("魔術消費MP-3")
-                if job2_lv >= 1: job_texts.append("戦技『Truth or Lie』(魔術確定命中/威力倍率上限50%/CT3)")
-                if job2_lv >= 2: job_texts.append("戦技『This Illusion, No Deception』(ダメ予想±5で魔法威力+100%/CT3)")
+                if job2_lv >= 0: mod_mp += 10; job_texts.append("奇術師Lv0: 魔術消費MP-3")
+                if job2_lv >= 1: job_texts.append("奇術師Lv1: 戦技『Truth or Lie』(魔術確定命中/威力倍率上限50%/CT3)")
+                if job2_lv >= 2: job_texts.append("奇術師Lv2: 戦技『This Illusion, No Deception』(ダメ予想±5で魔法威力+100%/CT3)")
                 if job2_lv >= 3: mod_mp += 5
-                if job2_lv >= 4: job_texts.append("特性『Ladies and Gentlemen』(男女ペアでHP&MP+10%)")
+                if job2_lv >= 4: job_texts.append("奇術師Lv4: 特性『Ladies and Gentlemen』(自分の他に男女の仲間が二人以上同じパーティーに居た場合HP&MP+10%)")
             elif job2 == "近接兵":
                 check_job_req_noc("格闘兵")
-                if job2_lv >= 0: job_texts.append("戦技『白兵戦闘』(近接+20%/CT2)")
-                if job2_lv >= 1: job_texts.append("戦技『高速突撃』(接近失敗時基準20で再判定/CT2)")
-                if job2_lv >= 2: job_texts.append("『高速突撃』強化(基準10で再判定)")
-                if job2_lv >= 3: job_texts.append("『高速突撃』強化(CT1)")
-                if job2_lv >= 4: job_texts.append("『白兵戦闘』強化(近接+30%)")
+                if job2_lv >= 0: job_texts.append("近接兵Lv0: 戦技『白兵戦闘』(近接+20%/CT2)")
+                if job2_lv >= 1: job_texts.append("近接兵Lv1: 戦技『高速突撃』(接近失敗時基準20で再判定/CT2)")
+                if job2_lv >= 2: job_texts.append("近接兵Lv2: 『高速突撃』強化(基準10で再判定)")
+                if job2_lv >= 3: job_texts.append("近接兵Lv3: 『高速突撃』強化(CT1)")
+                if job2_lv >= 4: job_texts.append("近接兵Lv4: 『白兵戦闘』強化(近接+30%)")
             elif job2 == "銃巧手":
                 check_job_req_noc("早撃手", "歩兵")
-                if job2_lv >= 0: mod_hp += 5; mod_stamina += 3; job_texts.append("銃の反動-1")
-                if job2_lv >= 1: job_texts.append("戦技『カウンターバレット』(リボルバー手持ち時回避でカウンター射撃)")
-                if job2_lv >= 2: job_texts.append("戦技『ファーストスウィング』(騎兵銃+1D/CT3)")
-                if job2_lv >= 3: job_texts.append("戦技『ブルズアイショット』(拳銃威力+3/敵回避基準+5/CT5)")
+                if job2_lv >= 0: mod_hp += 5; mod_stamina += 3; job_texts.append("銃巧手Lv0: 銃の反動-1")
+                if job2_lv >= 1: job_texts.append("銃巧手Lv1: 戦技『カウンターバレット』(リボルバー手持ち時回避でカウンター射撃)")
+                if job2_lv >= 2: job_texts.append("銃巧手Lv2: 戦技『ファーストスウィング』(騎兵銃+1D/CT3)")
+                if job2_lv >= 3: job_texts.append("銃巧手Lv3: 戦技『ブルズアイショット』(拳銃威力+3/敵回避基準+5/CT5)")
 
     # --- ファンタジア限定システム ---
     fan_sys_texts = []
@@ -1794,6 +1794,7 @@ def calculate():
 星: {origin}　|　種族: {race}{sub_text}
 属性: {attr_text}　|　家柄: {lineage}
 出自: {bg}{bg_sub_text}　|　加護: {blessing}
+人種: {ethnicity}　|　性別: {gender}　|　年代: {age}
 
 【ジョブ】
 {job_info_text}

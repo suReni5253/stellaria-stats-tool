@@ -1849,7 +1849,7 @@ st.set_page_config(
 )
 
 st.title("⚔️ ステラリアクロニクル ステ計ツール")
-
+st.subheader("あくまでサポートツールです。最後は手動でチェックを行ってください。")
 # ---- サイドバー: セーブ/ロード ----
 with st.sidebar:
     st.header("💾 セーブ / ロード")

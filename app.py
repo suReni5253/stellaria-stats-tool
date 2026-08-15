@@ -129,7 +129,7 @@ def calculate():
     lvl_num = int(level_str.replace('Lv', ''))
     
     # 【レベルボーナス技能ポイント】
-    lvl_bonus_sp_dict = {
+    lvl_bonus_sp_stages = {
         0: 0,
         1: 20 if origin == "ファンタジア" else 40,
         2: 30 if origin == "ファンタジア" else 50,
@@ -142,7 +142,8 @@ def calculate():
         9: 90,
         10: 100
     }
-    bonus_sp += lvl_bonus_sp_dict.get(lvl_num, 0)
+    for lv in range(1, lvl_num + 1):
+        bonus_sp += lvl_bonus_sp_stages.get(lv, 0)
     
     
     warning_errors = []

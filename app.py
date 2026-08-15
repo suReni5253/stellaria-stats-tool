@@ -5,7 +5,7 @@ import json
 # 1. データ定義
 # ===================================================
 list_origin = ["ファンタジア", "ノクターン"]
-list_level = [f"Lv{i}" for i in range(1, 11)]
+list_level = [f"Lv{i}" for i in range(0, 11)]
 list_age = ["幼年", "青年", "壮年", "中年", "老年"]
 list_gender = ["男", "女", "中性"]
 list_ethnicity = ["東方人", "西方人", "南方人", "北方人"]
@@ -63,7 +63,7 @@ list_job2_lv = ["0", "1", "2", "3", "4"]
 list_stats = ["(なし)", "筋力", "知力", "敏捷", "精神", "体格", "生命", "容姿", "芸術", "商才", "信仰"]
 base_stats_names = ["筋力", "知力", "敏捷", "精神", "体格", "生命", "容姿", "芸術", "商才", "信仰"]
 list_sub_stats = ["膂力", "叡智", "体力", "持久力", "技量", "神聖", "商売", "表現力", "探求心"]
-dict_max_sp = {"Lv1": 2, "Lv2": 4, "Lv3": 6, "Lv4": 8, "Lv5": 10, "Lv6": 13, "Lv7": 16, "Lv8": 19, "Lv9": 22, "Lv10": 26}
+dict_max_sp = {"Lv0": 0, "Lv1": 2, "Lv2": 4, "Lv3": 6, "Lv4": 8, "Lv5": 10, "Lv6": 13, "Lv7": 16, "Lv8": 19, "Lv9": 22, "Lv10": 26}
 demon_races = ["鬼人族", "ヴァンパイア", "人狼", "デュラハン", "マンティコアF","マンティコアN", "クラーケンF", "クラーケンN", "ウーンゲフォイヤー", "メルフェディオヌ", "ノクト・ヴァンパイア"]
 cursed_races = ["呪い人", "羅刹", "アルラウネ", "スチームブッチャー", "怪異憑依者／怪人", "ゴブリン", "妖怪", "妖狐", "不死者", "天狗", "鬼半妖","マリオネット","ホムンクルス","失耀天使"]
 
@@ -122,7 +122,7 @@ def calculate():
                 stats[k] = stats.get(k, 0) + val
     
     # 画面で選ばれたレベル(例:"Lv2")を取得して、dict_max_spの表から最大SPを引っ張ってくる！
-    level_str = p.get('level', 'Lv1')
+    level_str = p.get('level', 'Lv0')
     max_sp = dict_max_sp.get(level_str, 0)
     
     # 【おまけの修正】種族スキルの計算で使う「lvl_num（数字のみ）」もここで作ってあげます
@@ -1679,11 +1679,12 @@ def calculate():
     val_martial = p.get('martial', '(なし)')
     val_craft = p.get('craft', '(なし)')
 
-    # キャラクターレベル制限の判定用辞書 (Lv1: キャラクタLv2以上, Lv2: Lv4以上...)
-    req_lv_dict = {1: 2, 2: 4, 3: 6, 4: 7}
+    # キャラクターレベル制限の判定用辞書 (Lv0: キャラクタLv1以上, Lv1: キャラクタLv2以上, Lv2: Lv4以上...)
+    req_lv_dict = {0: 1, 1: 2, 2: 4, 3: 6, 4: 7}
 
     def check_and_get_lv(name, val_str):
-        if "Lv1" in val_str: lv = 1
+        if "Lv0" in val_str: lv = 0
+        elif "Lv1" in val_str: lv = 1
         elif "Lv2" in val_str: lv = 2
         elif "Lv3" in val_str: lv = 3
         elif "Lv4" in val_str: lv = 4

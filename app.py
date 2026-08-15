@@ -128,6 +128,23 @@ def calculate():
     # 【おまけの修正】種族スキルの計算で使う「lvl_num（数字のみ）」もここで作ってあげます
     lvl_num = int(level_str.replace('Lv', ''))
     
+    # 【レベルボーナス技能ポイント】
+    lvl_bonus_sp_dict = {
+        0: 0,
+        1: 20 if origin == "ファンタジア" else 40,
+        2: 30 if origin == "ファンタジア" else 50,
+        3: 50,
+        4: 70,
+        5: 80,
+        6: 50,
+        7: 70,
+        8: 80,
+        9: 90,
+        10: 100
+    }
+    bonus_sp += lvl_bonus_sp_dict.get(lvl_num, 0)
+    
+    
     warning_errors = []
     is_atoning_blood = False
     

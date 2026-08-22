@@ -9,7 +9,6 @@ list_level = [f"Lv{i}" for i in range(0, 11)]
 list_age = ["幼年", "青年", "壮年", "中年", "老年"]
 list_gender = ["男", "女", "中性"]
 list_ethnicity = ["東方人", "西方人", "南方人", "北方人"]
-
 list_race_common = [
     "人間族", "獣人族", "翼人族", "鬼人族", "兎人族", "呪い人", "マーメイド",
     "ドラシオン", "巨人族", "猫人族", "妖怪", "妖狐", "ドリュアス",
@@ -20,7 +19,7 @@ list_race_fantasia = list_race_common + [
     "ハイエルフ", "ハーフエルフ", "ダークエルフ", "ドワーフ", "ウッドエルフ",
     "フェルダー", "ヴァンパイア", "人狼", "デュラハン", "ダンピール",
     "レウィス・ゴーレム", "ゴブリン", "ハーフドラゴン", "スノウエルフ", "妖精族",
-    "ホムンクルス", "ダークドワーフ", "蛇人", "幻蛛族", "失耀天使", "コブラナイ",
+    "ホムンクルス", "ダークドワーフ", "蛇人", "幻蛛族", "失耀天使", "コブラナイ", "アルケミーゴーレム"
     "フレイムエルフ", "ウーンゲフォイヤー", "ヴァンシー", "クラーケンF","マンティコアF", "メルフェディオヌF", "ローレライ"
 ]
 list_race_nocturne = list_race_common + [
@@ -252,9 +251,9 @@ def calculate():
                 eva_limit_break += 5 if lineage == 100 else (4 if lineage >= 91 else (3 if lineage >= 71 else 2))
                 stats["敏捷"] += agi_mer; stats["商才"] += agi_mer
         elif race == "呪い人":
-                mod_credit -= 3
+                mod_credit -= 3; bonus_sp += 150
                 if lineage >= 10:
-                    mod_hp -= 15; mod_mp -= 15; mod_stamina -= 5; bonus_sp += 150
+                    mod_hp -= 15; mod_mp -= 15; mod_stamina -= 5
                     add_stats_group(-30)
                 else:
                     diff = 11 - lineage
@@ -538,6 +537,10 @@ def calculate():
                 stats["筋力"] += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
                 stats["商才"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
                 add_stats_group(5 if lineage == 100 else (4 if lineage >= 71 else 3), exclude=["体格", "敏捷", "筋力", "商才"])
+            elif race == "アルケミーゴーレム":
+                mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
+                mod_stamina += 4 if lineage == 100 else (3 if lineage >= 71 else 2)
+                add_stats_group(11 if lineage == 100 else (7 if lineage >= 71 else 3))
             elif race == "フレイムエルフ":
                 mod_hp += 20 if lineage == 100 else (14 if lineage >= 71 else 8)
                 mod_mp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)

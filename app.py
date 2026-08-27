@@ -63,6 +63,14 @@ list_stats = ["(なし)", "筋力", "知力", "敏捷", "精神", "体格", "生
 base_stats_names = ["筋力", "知力", "敏捷", "精神", "体格", "生命", "容姿", "芸術", "商才", "信仰"]
 list_sub_stats = ["膂力", "叡智", "体力", "持久力", "技量", "神聖", "商売", "表現力", "探求心"]
 dict_max_sp = {"Lv0": 0, "Lv1": 2, "Lv2": 4, "Lv3": 6, "Lv4": 8, "Lv5": 10, "Lv6": 13, "Lv7": 16, "Lv8": 19, "Lv9": 22, "Lv10": 26}
+human_races =[]
+half_human_races = []
+devil_races = []
+spirit_races = []
+machine_races = []
+half_machine_races = []
+demihuman_races = []
+animal_races = []
 demon_races = ["鬼人族", "ヴァンパイア", "人狼", "デュラハン", "マンティコアF","マンティコアN", "クラーケンF", "クラーケンN", "ウーンゲフォイヤー", "メルフェディオヌ", "ノクト・ヴァンパイア"]
 cursed_races = ["呪い人", "羅刹", "アルラウネ", "スチームブッチャー", "怪異憑依者／怪人", "ゴブリン", "妖怪", "妖狐", "不死者", "天狗", "鬼半妖","マリオネット","ホムンクルス","失耀天使"]
 
@@ -1039,8 +1047,8 @@ def calculate():
             elif job_name == "遊撃師":
                 job_texts.append("遊撃師Lv0: 【遊撃の要】メイン弓時、サブ枠でダガー2本装備可(連撃可) / 弓とダガーの切替が事前動作で可")
                 if lv >= 1: job_texts.append("遊撃師Lv1: 職業戦技『縦横無尽』【前衛時、弓攻撃前にダガー最大三連撃可(当該ターン全攻撃ダメ-50%)】")
-                if lv >= 2: job_texts.append("遊撃師Lv2: 職業戦技『旋風の如く』【弓連射可能回数+1】")
-                if lv >= 3: job_texts.append("遊撃師Lv3: 職業戦技『シューティングスター』【1T弓と短剣の威力+20%/CT5】")
+                if lv >= 2: job_texts.append("遊撃師Lv2: 職業戦技『旋風の如く』【短弓連射可能回数+1】")
+                if lv >= 3: job_texts.append("遊撃師Lv3: 職業戦技『シューティングスター』【1T短弓と短剣の威力+30%/CT5】")
                 
             elif job_name == "射撃士":
                 job_texts.append("射撃士Lv0: 何もなし")
@@ -1186,10 +1194,11 @@ def calculate():
                 
             elif job2 == "弓騎士":
                 check_job_req("射撃士", "修練者")
+                job_texts.append("弓騎士Lv0: HP+5"); mod_hp += 5
                 if job2_lv >= 1: job_texts.append("弓騎士Lv1: 銀撃【1ターン物理射撃ダメ30%UP(CT3)】")
-                if job2_lv >= 2: job_texts.append("弓騎士Lv2: 銀撃強化【効果ターン+1】")
-                if job2_lv >= 3: job_texts.append("弓騎士Lv3: アーチェリーオブバトルライン【両手射撃装備時、回避失敗時に基準値20で再判定可(CT5)】")
-                if job2_lv >= 4: job_texts.append("弓騎士Lv4: アーチェリーオブバトルライン強化【発動中、射撃威力+5】")
+                if job2_lv >= 2: job_texts.append("弓騎士Lv2: 銀撃強化【効果ターン+1】 / 長弓連射数+1")
+                if job2_lv >= 3: job_texts.append("弓騎士Lv3: アーチェリーオブバトルライン【長弓装備時発動、敵からのダメージ累減-10%、長弓威力+30%(CT5)】")
+                if job2_lv >= 4: job_texts.append("弓騎士Lv4: アーチェリーオブバトルライン強化【長弓威力+50%】")
                 
             elif job2 == "勇者":
                 my_jobs = {job1_1: job1_1_lv, job1_2: job1_2_lv, job1_3: job1_3_lv, job1_4: job1_4_lv}
@@ -1201,7 +1210,7 @@ def calculate():
                 if not has_all_reqs:
                     warning_errors.append("⚠️ 【二次職エラー】勇者の条件（冒険者, 修練者, 旅騎士, 魔術師すべてLv3以上）を満たしていません。")
                 mod_hp += 5; mod_mp += 5
-                job_texts.append("勇者Lv0: 全武器威力+10%(片手剣,両手剣,複銃剣除く)")
+                job_texts.append("勇者Lv0: HPMP+5 / 全武器威力+10%(片手剣,両手剣,複銃剣除く)")
                 if job2_lv >= 1: job_texts.append("勇者Lv1: 勇気の剣術【片/両手剣威力+20% / 複銃剣斬撃+20% / 双剣に防御半減付与】")
                 if job2_lv >= 2: job_texts.append("勇者Lv2: 勇気の魔法【魔法攻撃+10% / 魔法回復+5% / 魔法消費MP-10%】")
                 if job2_lv >= 3: job_texts.append("勇者Lv3: 勇者への道【1ターン攻撃+15%, 全防御+15%, 全防護+5, 回避+5(突破)(1戦闘1回)】")

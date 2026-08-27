@@ -1851,9 +1851,6 @@ MP: {final_mp}
 スタミナ: {final_stamina}
 回避: {final_evasion}
 気絶点: {faint}
-技能上限: {skill_cap} 
-
-気絶点: {faint}
 依存点: {depend}
 幸運: {luck} (最大50)
 精神限界: {final_mental}

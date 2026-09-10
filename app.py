@@ -599,7 +599,14 @@ def calculate():
                 stats["知力"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 stats["精神"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
                 add_stats_group(7 if lineage == 100 else (5 if lineage >= 71 else 3), exclude=["容姿", "知力", "精神"])
-            
+            elif race == "モーデュリア":
+                mod_hp += 25 if lineage == 100 else (20 if lineage >= 71 else 15)
+                mod_mp += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                mod_stamina += 3 if lineage == 100 else (2 if lineage >= 71 else 1)
+                stats["生命"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                stats["容姿"] += 20 if lineage == 100 else (15 if lineage >= 71 else 10)
+                stats["体格"] += 15 if lineage == 100 else (10 if lineage >= 71 else 5)
+                add_stats_group(7 if lineage == 100 else (5 if lineage >= 71 else 3), exclude=["生命", "容姿", "体格"])
         if race == "フェルダー": stats["体格"] = int(stats["体格"] * 0.7)
         if race == "コブラナイ": stats["体格"] = int(stats["体格"] * 0.7)
         if race == "コブラナイ": stats["敏捷"] = int(stats["敏捷"] * 0.7)
@@ -850,7 +857,12 @@ def calculate():
     bg_sub = p.get('bg_sub', '')
 
     if origin == "ファンタジア":
-        if bg == "騎士": mod_hp += 10
+        if bg == "騎士": 
+            mod_hp += 10
+            if race == "モーデュリア" :
+                mod_mp += 10
+                mod_stamina += 2
+                
         elif bg == "賊": bonus_ab_melee += 2
         elif bg == "魔術師": bonus_ab_magic += 2; mod_mp += 10
         elif bg == "聖職者": mod_mp += 20

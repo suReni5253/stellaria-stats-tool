@@ -185,6 +185,25 @@ def calculate():
     # ★追加ここまで
     attr_sys_texts = []
     
+    past0, past1, past2 = p['past0'], p['past1'], p['past2']
+    if past0 == "➁生存": stats["生命"] += 3; mod_hp += 5
+    if past0 == "③悲哀": stats["精神"] += 3; mod_mp += 5
+    if past0 == "④愚行": stats["筋力"] += 3; mod_stamina += 1
+    if past0 == "⑤才能": stats["知力"] += 3; bonus_sp += 50
+    if past0 == "⑥血統": stats["体格"] += 5; lineage +=2
+    if past0 == "⑦復讐": stats["敏捷"] += 3; mod_hp += 3; mod_mp += 3
+    if past1 == "①孤独": stats["筋力"] += 5; stats["知力"] -= 5
+    if past1 == "③愛情": stats["知力"] += 5; stats["筋力"] -= 5
+    if past1 == "④禁断": stats["精神"] += 5; stats["生命"] -= 5
+    if past1 == "⑤特別": add_stats_group(1)
+    if past1 == "⑥苦痛": stats["敏捷"] += 5; stats["精神"] -= 5
+    if past2 == "①暴力": stats["筋力"] += 5; stats["知力"] -= 5
+    elif past2 == "➁矜持": stats["精神"] += 5
+    elif past2 == "③風詠": stats["敏捷"] += 5; stats["生命"] -= 5
+    elif past2 == "④勤勉": stats["知力"] += 5; stats["筋力"] -= 5
+    elif past2 == "⑤失意": stats["生命"] += 5; stats["精神"] -= 5
+    elif past2 == "⑥憧憬": stats["容姿"] += 2; stats["精神"] -= 4; mod_luck += 2
+    
     for a in current_attrs:
         if a == "炎属性":
             attr_sys_texts.append("【炎属性】《燃焼》炎・水・夜光属性以外の敵に対して攻撃威力+10%(無属性にも有効)/状態異常：凍傷を無効化する")
@@ -826,24 +845,6 @@ def calculate():
         base_credit = 60
     elif lineage == 100:
         base_credit = 70
-
-    past0, past1, past2 = p['past0'], p['past1'], p['past2']
-    if past0 == "➁生存": stats["生命"] += 3; mod_hp += 5
-    if past0 == "③悲哀": stats["精神"] += 3; mod_mp += 5
-    if past0 == "④愚行": stats["筋力"] += 3; mod_stamina += 1
-    if past0 == "⑤才能": stats["知力"] += 3; bonus_sp += 50
-    if past0 == "⑦復讐": stats["敏捷"] += 3; mod_hp += 3; mod_mp += 3
-    if past1 == "①孤独": stats["筋力"] += 5; stats["知力"] -= 5
-    if past1 == "③愛情": stats["知力"] += 5; stats["筋力"] -= 5
-    if past1 == "④禁断": stats["精神"] += 5; stats["生命"] -= 5
-    if past1 == "⑤特別": add_stats_group(1)
-    if past1 == "⑥苦痛": stats["敏捷"] += 5; stats["精神"] -= 5
-    if past2 == "①暴力": stats["筋力"] += 5; stats["知力"] -= 5
-    elif past2 == "➁矜持": stats["精神"] += 5
-    elif past2 == "③風詠": stats["敏捷"] += 5; stats["生命"] -= 5
-    elif past2 == "④勤勉": stats["知力"] += 5; stats["筋力"] -= 5
-    elif past2 == "⑤失意": stats["生命"] += 5; stats["精神"] -= 5
-    elif past2 == "⑥憧憬": stats["容姿"] += 2; stats["精神"] -= 4; mod_luck += 2
 
     adjust_val = 1 if past0 == "①凡庸" else (2 if past1 == "➁平凡" else 0)
     if adjust_val > 0:

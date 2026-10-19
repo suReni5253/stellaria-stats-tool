@@ -190,7 +190,7 @@ def calculate():
     if past0 == "③悲哀": stats["精神"] += 3; mod_mp += 5
     if past0 == "④愚行": stats["筋力"] += 3; mod_stamina += 1
     if past0 == "⑤才能": stats["知力"] += 3; bonus_sp += 50
-    if past0 == "⑥血統": stats["体格"] += 5; lineage +=2
+    if past0 == "⑥血統": stats["体格"] += 5; lineage += 2
     if past0 == "⑦復讐": stats["敏捷"] += 3; mod_hp += 3; mod_mp += 3
     if past1 == "①孤独": stats["筋力"] += 5; stats["知力"] -= 5
     if past1 == "③愛情": stats["知力"] += 5; stats["筋力"] -= 5
